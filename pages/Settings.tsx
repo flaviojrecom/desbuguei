@@ -148,7 +148,7 @@ export const Settings = () => {
     setLoadingId(char.id);
 
     try {
-        const ai = new GoogleGenAI({ apiKey: getEnv('API_KEY') });
+        const ai = new GoogleGenAI({ apiKey: getEnv('VITE_GEMINI_API_KEY') });
         const response = await ai.models.generateContent({
             model: "gemini-2.5-flash-preview-tts",
             contents: [{ parts: [{ text: char.previewText }] }],

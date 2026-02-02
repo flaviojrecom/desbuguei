@@ -33,9 +33,9 @@ const localDatabase: Record<string, TermData> = {
 
 // Helper para inicializar a IA apenas quando necessário
 const getAIClient = () => {
-  const apiKey = getEnv('API_KEY');
+  const apiKey = getEnv('VITE_GEMINI_API_KEY');
   if (!apiKey) {
-    throw new Error("API Key não configurada. Verifique as configurações na Vercel (VITE_API_KEY).");
+    throw new Error("API Key não configurada. Verifique as configurações no .env.local (VITE_GEMINI_API_KEY).");
   }
   return new GoogleGenAI({ apiKey });
 };
@@ -78,9 +78,9 @@ export const getTermData = async (termId: string): Promise<TermData> => {
   // C. Generate with Gemini (Cache Miss)
   try {
     const ai = getAIClient(); // Inicializa aqui para evitar erros globais
-    
+
     const response = await ai.models.generateContent({
-      model: "gemini-3-flash-preview", 
+      model: "gemini-2.0-flash", 
       contents: `You are a technical glossary for business executives. Define the term "${termId}".
       
       Requirements:

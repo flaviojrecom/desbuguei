@@ -162,7 +162,7 @@ export const VoiceAssistant = () => {
     try {
       setStatus('connecting');
       // Create new client for every session to avoid stale state
-      const ai = new GoogleGenAI({ apiKey: getEnv('API_KEY') });
+      const ai = new GoogleGenAI({ apiKey: getEnv('VITE_GEMINI_API_KEY') });
       
       // Initialize Audio Contexts
       inputContextRef.current = new (window.AudioContext || (window as any).webkitAudioContext)({ sampleRate: 16000 });
