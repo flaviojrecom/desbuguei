@@ -1,0 +1,19 @@
+# AIOS Project Configuration
+version: 2.1.0
+
+project:
+  name: desbuguei
+  type: greenfield
+  created: 2026-02-01
+
+environment:
+  bootstrapped: true
+  bootstrap_date: 2026-02-01T00:00:00
+
+workflow:
+  current: greenfield-fullstack
+  phase: 1-environment-complete
+
+settings:
+  auto_update_status: true
+  quality_gates_enabled: true
