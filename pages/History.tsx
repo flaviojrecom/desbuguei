@@ -1,18 +1,7 @@
 import React, { useState } from 'react';
 import { TermCard } from '../components/Card';
 import { useHistory } from '../context/HistoryContext';
-
-// Helper to map API categories to Card colors
-const getCategoryColor = (category: string) => {
-  const normalized = category.toLowerCase();
-  if (normalized.includes('desenvolvimento') || normalized.includes('api')) return 'primary';
-  if (normalized.includes('dados') || normalized.includes('data')) return 'emerald';
-  if (normalized.includes('infra') || normalized.includes('cloud')) return 'blue';
-  if (normalized.includes('agile') || normalized.includes('produto')) return 'orange';
-  if (normalized.includes('segurança') || normalized.includes('security')) return 'rose';
-  if (normalized.includes('backend') || normalized.includes('web3')) return 'purple';
-  return 'primary';
-};
+import { getCategoryColorFromName } from '../utils/categoryColors';
 
 const formatHistoryDate = (isoString: string) => {
   const date = new Date(isoString);
@@ -98,7 +87,7 @@ export const History = () => {
               id={item.data.id}
               title={item.data.term} 
               category={item.data.category} 
-              categoryColor={getCategoryColor(item.data.category)}
+              categoryColor={getCategoryColorFromName(item.data.category)}
               icon="history" // Default icon for history
               description={item.data.definition}
               date={formatHistoryDate(item.timestamp)}

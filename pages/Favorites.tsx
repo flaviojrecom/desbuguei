@@ -2,18 +2,7 @@ import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { TermCard } from '../components/Card';
 import { useFavorites } from '../context/FavoritesContext';
-
-// Reusing helper logic for consistency (in a real app, this would be in utils)
-const getCategoryColor = (category: string) => {
-  const normalized = category.toLowerCase();
-  if (normalized.includes('desenvolvimento') || normalized.includes('api')) return 'primary';
-  if (normalized.includes('dados') || normalized.includes('data')) return 'emerald';
-  if (normalized.includes('infra') || normalized.includes('cloud')) return 'blue';
-  if (normalized.includes('agile') || normalized.includes('produto')) return 'orange';
-  if (normalized.includes('segurança') || normalized.includes('security')) return 'rose';
-  if (normalized.includes('backend') || normalized.includes('web3')) return 'purple';
-  return 'primary';
-};
+import { getCategoryColorFromName } from '../utils/categoryColors';
 
 export const Favorites = () => {
   const { favorites } = useFavorites();
@@ -61,7 +50,7 @@ export const Favorites = () => {
                         id={term.id}
                         title={term.term} 
                         category={term.category} 
-                        categoryColor={getCategoryColor(term.category)} 
+                        categoryColor={getCategoryColorFromName(term.category)} 
                         icon="bookmark" 
                         description={term.definition}
                         isFavorite={true} // Force favorite state visual

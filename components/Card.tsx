@@ -2,36 +2,19 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { useTheme } from '../context/ThemeContext';
 import { useFavorites } from '../context/FavoritesContext';
+import { getCategoryColor, type CategoryColorKey } from '../utils/categoryColors';
 
 interface TermCardProps {
   id?: string; // Optional ID if this card interacts with the DB
   title: string;
   category: string;
-  categoryColor?: 'primary' | 'purple' | 'emerald' | 'orange' | 'rose' | 'blue';
+  categoryColor?: CategoryColorKey;
   description: string;
   icon: string;
   to?: string;
   date?: string;
   isFavorite?: boolean; // Override state
 }
-
-const darkModeMap = {
-  primary: { bg: 'bg-cyan-500/10', text: 'text-cyan-400', border: 'border-cyan-500/10', hoverText: 'group-hover:text-cyan-400', badge: 'bg-cyan-950/30 text-cyan-300/70' },
-  purple: { bg: 'bg-purple-500/10', text: 'text-purple-400', border: 'border-purple-500/10', hoverText: 'group-hover:text-purple-400', badge: 'bg-purple-950/30 text-purple-300/70' },
-  emerald: { bg: 'bg-emerald-500/10', text: 'text-emerald-400', border: 'border-emerald-500/10', hoverText: 'group-hover:text-emerald-400', badge: 'bg-emerald-950/30 text-emerald-300/70' },
-  orange: { bg: 'bg-orange-500/10', text: 'text-orange-400', border: 'border-orange-500/10', hoverText: 'group-hover:text-orange-400', badge: 'bg-orange-950/30 text-orange-300/70' },
-  rose: { bg: 'bg-rose-500/10', text: 'text-rose-400', border: 'border-rose-500/10', hoverText: 'group-hover:text-rose-400', badge: 'bg-rose-950/30 text-rose-300/70' },
-  blue: { bg: 'bg-blue-500/10', text: 'text-blue-400', border: 'border-blue-500/10', hoverText: 'group-hover:text-blue-400', badge: 'bg-blue-950/30 text-blue-300/70' },
-};
-
-const lightModeStyle = {
-  bg: 'bg-white',           
-  text: 'text-slate-600',       
-  border: 'border-slate-300',   
-  hoverInteraction: 'group-hover:border-primary group-hover:text-primary group-hover:bg-primary/10 group-hover:shadow-[0_0_15px_-5px_rgba(var(--color-primary),0.3)]',
-  hoverText: 'group-hover:text-primary',
-  badge: 'bg-white text-slate-600 border-slate-300 group-hover:border-primary/50 group-hover:text-primary' 
-};
 
 export const TermCard: React.FC<TermCardProps> = ({ 
   id,
@@ -46,15 +29,16 @@ export const TermCard: React.FC<TermCardProps> = ({
 }) => {
   const { themeMode } = useTheme();
   const { isFavorite, toggleFavorite } = useFavorites();
-  
+
   const isLight = themeMode === 'light';
-  const colors = isLight ? lightModeStyle : darkModeMap[categoryColor];
-  
+  const colorScheme = getCategoryColor(categoryColor || 'primary');
+  const colors = isLight ? colorScheme.light : colorScheme.dark;
+
   // Use prop favorite if defined (for static display), otherwise check ID in context
   const favorited = propFavorite !== undefined ? propFavorite : (id ? isFavorite(id) : false);
 
   const iconContainerClasses = isLight
-    ? `p-3.5 rounded-full border shadow-inner transition-all duration-300 group-hover:scale-110 ${lightModeStyle.bg} ${lightModeStyle.text} ${lightModeStyle.border} ${lightModeStyle.hoverInteraction}`
+    ? `p-3.5 rounded-full border shadow-inner transition-all duration-300 group-hover:scale-110 ${colors.bg} ${colors.text} ${colors.border} group-hover:border-primary group-hover:bg-primary/10 group-hover:shadow-[0_0_15px_-5px_rgba(var(--color-primary),0.3)]`
     : `p-3.5 rounded-full border shadow-inner transition-all duration-300 group-hover:scale-110 ${colors.bg} ${colors.border} ${colors.text}`;
 
   const heartActiveColor = isLight ? 'text-primary drop-shadow-[0_0_8px_rgba(var(--color-primary),0.5)]' : 'text-rose-500';

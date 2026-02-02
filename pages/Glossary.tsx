@@ -3,18 +3,7 @@ import React, { useState, useMemo, useEffect } from 'react';
 import { TermCard } from '../components/Card';
 import { supabase, isSupabaseConfigured } from '../services/supabase';
 import { TermData } from '../types';
-
-// Helper for consistency
-const getCategoryColor = (category: string) => {
-  const normalized = category.toLowerCase();
-  if (normalized.includes('desenvolvimento') || normalized.includes('api')) return 'primary';
-  if (normalized.includes('dados') || normalized.includes('data')) return 'emerald';
-  if (normalized.includes('infra') || normalized.includes('cloud')) return 'blue';
-  if (normalized.includes('agile') || normalized.includes('produto')) return 'orange';
-  if (normalized.includes('segurança') || normalized.includes('security')) return 'rose';
-  if (normalized.includes('backend') || normalized.includes('web3')) return 'purple';
-  return 'primary';
-};
+import { getCategoryColorFromName } from '../utils/categoryColors';
 
 const categories = ["Todos", "Desenvolvimento", "Infraestrutura", "Agile & Produto", "Dados & IA", "Segurança"];
 
@@ -211,7 +200,7 @@ export const Glossary = () => {
                         id={item.id}
                         title={item.term || ''} 
                         category={item.category || 'Geral'} 
-                        categoryColor={getCategoryColor(item.category || '') as any}
+                        categoryColor={getCategoryColorFromName(item.category || '') as any}
                         icon="library_books" 
                         description={item.definition || ''}
                     />
