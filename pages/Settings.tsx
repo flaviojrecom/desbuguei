@@ -41,11 +41,11 @@ async function decodeAudioData(
 export const Settings = () => {
   const { themeMode, setThemeMode } = useTheme();
   const { activeCharacter, setActiveCharacter } = useVoice();
-  
+
   // Audio Preview State
   const [playingId, setPlayingId] = useState<string | null>(null);
   const [loadingId, setLoadingId] = useState<string | null>(null);
-  
+
   // Admin / Seeding State
   const [isAdminUnlocked, setIsAdminUnlocked] = useState(false);
   const [adminPasswordInput, setAdminPasswordInput] = useState("");
@@ -55,10 +55,63 @@ export const Settings = () => {
   const [seeding, setSeeding] = useState(false);
   const [seedLogs, setSeedLogs] = useState<string[]>([]);
   const [customListText, setCustomListText] = useState("");
+
+  // Keyboard Navigation State for Character Selection
+  const [focusedCharacterIndex, setFocusedCharacterIndex] = useState<number>(
+    characters.findIndex(c => c.id === activeCharacter.id)
+  );
+
   const logsEndRef = useRef<HTMLDivElement>(null);
-  
+  const charGridRef = useRef<HTMLDivElement>(null);
+
   const audioContextRef = useRef<AudioContext | null>(null);
   const sourceRef = useRef<AudioBufferSourceNode | null>(null);
+
+  // Keyboard navigation for character selection (arrow keys + Enter/Space to select)
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (!charGridRef.current) return;
+
+      switch (e.key) {
+        case 'ArrowLeft':
+          e.preventDefault();
+          setFocusedCharacterIndex((prev) =>
+            prev > 0 ? prev - 1 : characters.length - 1
+          );
+          break;
+        case 'ArrowRight':
+          e.preventDefault();
+          setFocusedCharacterIndex((prev) =>
+            prev < characters.length - 1 ? prev + 1 : 0
+          );
+          break;
+        case 'ArrowUp':
+          e.preventDefault();
+          // For 3-column grid, up is -3 items
+          setFocusedCharacterIndex((prev) =>
+            prev >= 3 ? prev - 3 : prev + characters.length - 3
+          );
+          break;
+        case 'ArrowDown':
+          e.preventDefault();
+          // For 3-column grid, down is +3 items
+          setFocusedCharacterIndex((prev) =>
+            prev < characters.length - 3 ? prev + 3 : prev - characters.length + 3
+          );
+          break;
+        case 'Enter':
+        case ' ':
+          e.preventDefault();
+          if (focusedCharacterIndex >= 0 && focusedCharacterIndex < characters.length) {
+            setActiveCharacter(characters[focusedCharacterIndex].id);
+          }
+          break;
+      }
+    };
+
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [focusedCharacterIndex]);
 
   // Cleanup on unmount
   useEffect(() => {
@@ -95,7 +148,7 @@ export const Settings = () => {
     setLoadingId(char.id);
 
     try {
-        const ai = new GoogleGenAI({ apiKey: getEnv('API_KEY') });
+        const ai = new GoogleGenAI({ apiKey: getEnv('VITE_GEMINI_API_KEY') });
         const response = await ai.models.generateContent({
             model: "gemini-2.5-flash-preview-tts",
             contents: [{ parts: [{ text: char.previewText }] }],
@@ -184,9 +237,9 @@ export const Settings = () => {
 
         {/* Theme Toggle Buttons */}
         <div className="flex gap-3">
-            <button 
+            <button
                 onClick={() => setThemeMode('light')}
-                className={`size-12 rounded-full border-2 flex items-center justify-center transition-all duration-300 ${
+                className={`size-12 rounded-full border-2 flex items-center justify-center transition-all duration-300 focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-offset-night-bg focus-visible:ring-primary ${
                     themeMode === 'light'
                     ? 'border-primary bg-primary/20 text-primary shadow-[0_0_15px_-5px_rgba(var(--color-primary),0.3)] scale-105'
                     : 'border-night-border bg-night-panel/50 text-slate-500 hover:border-slate-500 hover:text-slate-300'
@@ -195,10 +248,10 @@ export const Settings = () => {
             >
                 <span className={`material-symbols-outlined text-xl ${themeMode === 'light' ? 'icon-filled' : ''}`}>light_mode</span>
             </button>
-            
-            <button 
+
+            <button
                 onClick={() => setThemeMode('dark')}
-                className={`size-12 rounded-full border-2 flex items-center justify-center transition-all duration-300 ${
+                className={`size-12 rounded-full border-2 flex items-center justify-center transition-all duration-300 focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-offset-night-bg focus-visible:ring-primary ${
                     themeMode === 'dark'
                     ? 'border-primary bg-primary/20 text-primary shadow-[0_0_15px_-5px_rgba(var(--color-primary),0.3)] scale-105'
                     : 'border-night-border bg-night-panel/50 text-slate-500 hover:border-slate-500 hover:text-slate-300'
@@ -218,21 +271,29 @@ export const Settings = () => {
             <h3 className="text-2xl font-bold font-display text-slate-100">Escolha seu Mentor</h3>
           </div>
           
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-             {characters.map((char) => {
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6" ref={charGridRef}>
+             {characters.map((char, index) => {
                  const isActive = activeCharacter.id === char.id;
+                 const isFocused = focusedCharacterIndex === index;
                  const isPlaying = playingId === char.id;
                  const isLoading = loadingId === char.id;
 
                  return (
-                     <div 
+                     <div
                         key={char.id}
                         onClick={() => setActiveCharacter(char.id)}
-                        className={`relative cursor-pointer rounded-3xl border-2 p-6 flex flex-col gap-4 transition-all duration-300 group ${
-                            isActive 
-                            ? `${char.color} shadow-xl scale-[1.02]` 
+                        onKeyDown={(e) => {
+                          if (e.key === 'Enter' || e.key === ' ') {
+                            e.preventDefault();
+                            setActiveCharacter(char.id);
+                          }
+                        }}
+                        tabIndex={isFocused ? 0 : -1}
+                        className={`relative cursor-pointer rounded-3xl border-2 p-6 flex flex-col gap-4 transition-all duration-300 group focus:outline-none ${
+                            isActive
+                            ? `${char.color} shadow-xl scale-[1.02]`
                             : 'border-night-border bg-night-panel/50 hover:bg-night-panel hover:border-slate-600'
-                        }`}
+                        } ${isFocused ? 'ring-2 ring-offset-2 ring-offset-night-bg ring-primary focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary' : ''}`}
                      >
                         <div className="flex items-center justify-between">
                             <div className={`size-16 rounded-full overflow-hidden flex items-center justify-center p-0.5 ${isActive ? 'bg-night-bg/30 ring-2 ring-offset-2 ring-offset-night-panel ring-current' : 'bg-night-bg border border-night-border'}`}>
@@ -284,18 +345,28 @@ export const Settings = () => {
                         </p>
                     </div>
                     
-                    <form onSubmit={handleUnlockAdmin} className="flex flex-col gap-3 w-full max-w-xs relative">
-                        <input 
-                            type="password" 
+                    <form onSubmit={handleUnlockAdmin} className="flex flex-col gap-4 w-full max-w-xs">
+                        <label htmlFor="admin-password" className="text-sm font-semibold text-slate-300">
+                            Código de Acesso <span className="text-rose-500" aria-label="obrigatório">*</span>
+                        </label>
+                        <input
+                            id="admin-password"
+                            type="password"
                             value={adminPasswordInput}
                             onChange={(e) => setAdminPasswordInput(e.target.value)}
-                            placeholder="Código de Acesso"
-                            className={`w-full bg-night-bg border ${adminError ? 'border-rose-500 text-rose-500 placeholder-rose-700/50' : 'border-night-border text-slate-200'} rounded-xl px-4 py-3 text-center focus:outline-none focus:ring-2 focus:ring-primary/50 transition-all font-mono tracking-widest`}
+                            placeholder="Digite seu código"
+                            aria-required="true"
+                            aria-describedby={adminError ? 'admin-error' : undefined}
+                            className={`w-full bg-night-bg border ${adminError ? 'border-rose-500 text-rose-500 placeholder-rose-700/50' : 'border-night-border text-slate-200'} rounded-xl px-4 py-3 text-center focus:outline-none focus-visible:ring-2 focus-visible:ring-primary/50 transition-all font-mono tracking-widest`}
                         />
-                         {adminError && <span className="text-rose-500 text-xs font-bold absolute -bottom-6 left-0 right-0">Código incorreto. Acesso negado.</span>}
-                        <button 
+                         {adminError && (
+                            <span id="admin-error" className="text-rose-500 text-xs font-bold" role="alert">
+                                Código incorreto. Acesso negado.
+                            </span>
+                        )}
+                        <button
                             type="submit"
-                            className="mt-2 w-full bg-night-panel border border-night-border hover:bg-emerald-500/10 hover:text-emerald-400 hover:border-emerald-500/50 text-slate-400 font-bold py-2 rounded-xl transition-all"
+                            className="mt-2 w-full bg-night-panel border border-night-border hover:bg-emerald-500/10 hover:text-emerald-400 hover:border-emerald-500/50 text-slate-400 font-bold py-2 rounded-xl transition-all focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-offset-night-bg focus-visible:ring-emerald-500/50"
                         >
                             Desbloquear Painel
                         </button>
@@ -326,20 +397,29 @@ export const Settings = () => {
                             )}
 
                             <div className="flex flex-col gap-3">
-                                <textarea 
+                                <label htmlFor="seed-list" className="text-sm font-semibold text-slate-300">
+                                    Lista de Termos para Alimentar IA
+                                </label>
+                                <textarea
+                                    id="seed-list"
                                     value={customListText}
                                     onChange={(e) => setCustomListText(e.target.value)}
                                     placeholder="Cole aqui: Kubernetes, Docker, API, React..."
-                                    className="w-full h-32 bg-night-bg border border-night-border rounded-xl p-4 text-sm text-slate-300 focus:border-emerald-500/50 focus:ring-1 focus:ring-emerald-500/50 outline-none resize-none font-mono"
+                                    aria-describedby="seed-help"
+                                    className="w-full h-32 bg-night-bg border border-night-border rounded-xl p-4 text-sm text-slate-300 focus:outline-none focus-visible:ring-2 focus-visible:ring-emerald-500/50 transition-all resize-none font-mono"
                                 ></textarea>
+                                <p id="seed-help" className="text-xs text-slate-500">
+                                    Separadas por vírgula ou quebra de linha. Máximo 50 termos por vez.
+                                </p>
 
                                 <div className="flex flex-wrap gap-3">
-                                    <button 
+                                    <button
                                         onClick={() => handleSeedDatabase(true)}
                                         disabled={seeding || !hasSupabase || !customListText.trim()}
-                                        className={`flex-1 px-6 py-3 rounded-xl font-bold flex items-center justify-center gap-3 transition-all ${
+                                        aria-label="Alimentar banco de dados com lista customizada"
+                                        className={`flex-1 px-6 py-3 rounded-xl font-bold flex items-center justify-center gap-3 transition-all focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-offset-night-bg focus-visible:ring-emerald-500 ${
                                             seeding || !customListText.trim()
-                                            ? 'bg-night-border text-slate-500 cursor-not-allowed' 
+                                            ? 'bg-night-border text-slate-500 cursor-not-allowed'
                                             : 'bg-emerald-500 text-night-bg hover:bg-emerald-400 shadow-lg shadow-emerald-500/20'
                                         }`}
                                     >

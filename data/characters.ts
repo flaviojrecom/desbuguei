@@ -24,7 +24,7 @@ export const characters: Character[] = [
     speed: 1.2,
     color: 'border-purple-500 bg-purple-500/10 text-purple-400',
     // Avatar: Alan (Men with glasses, headphones)
-    avatarUrl: '/avatars/Alan.png',
+    avatarUrl: '/avatars/alan.png',
     description: 'Entusiasta, fala rápido e usa muitas gírias do mundo tech.',
     previewText: 'Fala Dev! Aqui é o Alan. Bora descomplicar essa tecnologia e codar o futuro?',
     systemInstruction: `Você é o Alan, um desenvolvedor Senior "Nerd" e entusiasta de tecnologia. 
@@ -44,7 +44,7 @@ export const characters: Character[] = [
     speed: 1.2,
     color: 'border-purple-500 bg-purple-500/10 text-purple-400',
     // Avatar: Jessica (Woman with glasses, bun)
-    avatarUrl: '/avatars/Jessica.png',
+    avatarUrl: '/avatars/jessica.png',
     description: 'Geek, ágil, sagaz e cheia de referências da cultura pop.',
     previewText: 'Oi, sou a Jessica! Pronta pra conectar os pontos e te explicar a lógica por trás disso tudo.',
     systemInstruction: `Você é a Jessica, uma Tech Lead "Geek".
@@ -65,7 +65,7 @@ export const characters: Character[] = [
     speed: 0.9,
     color: 'border-orange-500 bg-orange-500/10 text-orange-400',
     // Avatar: Pedrão (Man with green cap)
-    avatarUrl: '/avatars/Pedrão.png',
+    avatarUrl: '/avatars/pedrao.png',
     description: 'Calmo, paciente e extremamente acolhedor.',
     previewText: 'Ôpa, tudo bão com você? Sou o Pedrão. Senta aí que a gente conversa com calma sobre tecnologia.',
     systemInstruction: `Você é o Pedrão, um consultor experiente e muito calmo, com um jeito simples do interior.
@@ -85,7 +85,7 @@ export const characters: Character[] = [
     speed: 0.9,
     color: 'border-orange-500 bg-orange-500/10 text-orange-400',
     // Avatar: Manuzinha (Girl with pink cap)
-    avatarUrl: '/avatars/Manuzinha.png',
+    avatarUrl: '/avatars/manuzinha.png',
     description: 'Doce, didática e companheira.',
     previewText: 'Oiê, sou a Manuzinha! Não precisa ter pressa, viu? A gente aprende tudo com jeitinho e carinho.',
     systemInstruction: `Você é a Manuzinha, uma mentora super paciente e doce.
@@ -106,7 +106,7 @@ export const characters: Character[] = [
     speed: 1.0,
     color: 'border-blue-500 bg-blue-500/10 text-blue-400',
     // Avatar: Rick (Man with tie)
-    avatarUrl: '/avatars/Rick.png',
+    avatarUrl: '/avatars/rick.png',
     description: 'Profissional, objetivo e sem rodeios.',
     previewText: 'Rick aqui. Soluções precisas para problemas complexos. Vamos direto à definição técnica.',
     systemInstruction: `Você é o Rick, um Arquiteto de Soluções focado em precisão técnica.
@@ -125,7 +125,7 @@ export const characters: Character[] = [
     speed: 1.0,
     color: 'border-blue-500 bg-blue-500/10 text-blue-400',
     // Avatar: Beth (Woman with glasses, suit)
-    avatarUrl: '/avatars/Beth.png',
+    avatarUrl: '/avatars/beth.png',
     description: 'Analítica, estruturada e executiva.',
     previewText: 'Olá, sou a Beth. Vamos analisar a arquitetura dessa informação com foco total em eficiência.',
     systemInstruction: `Você é a Beth, uma CIO (Chief Information Officer) altamente analítica.
