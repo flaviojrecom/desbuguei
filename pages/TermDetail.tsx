@@ -105,7 +105,7 @@ export const TermDetail = () => {
     return (
         <div className="max-w-5xl mx-auto p-12 text-center">
             <h2 className="text-2xl text-slate-100 font-bold mb-4">Termo não encontrado</h2>
-            <Link to="/glossary" className="text-primary hover:underline">Voltar para o Glossário</Link>
+            <Link to="/" className="text-primary hover:underline">Voltar para o Painel Principal</Link>
         </div>
     );
   }
@@ -117,7 +117,7 @@ export const TermDetail = () => {
       {/* Header Navigation */}
       <header className="flex flex-col gap-6 mb-10">
         <div className="flex items-center justify-between">
-          <Link to="/glossary" className="flex items-center gap-2 text-primary hover:underline text-sm font-medium">
+          <Link to="/" className="flex items-center gap-2 text-primary hover:underline text-sm font-medium">
             <span className="material-symbols-outlined text-sm">arrow_back</span>
             Voltar para busca
           </Link>
