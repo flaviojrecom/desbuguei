@@ -123,11 +123,11 @@ As a **UX designer**, I want to **audit and fix keyboard navigation** so that **
 
 ### Task 6: Create Keyboard Shortcuts Documentation
 **Subtasks:**
-- [ ] 6.1 Document all keyboard shortcuts in Help section
-- [ ] 6.2 Create developer guide: `docs/guides/keyboard-accessibility.md`
-- [ ] 6.3 Include code examples for implementing keyboard support
-- [ ] 6.4 Document WCAG 2.1 Level AA keyboard criteria
-- [ ] 6.5 Create checklist for future keyboard accessibility reviews
+- [x] 6.1 Document all keyboard shortcuts in Help section
+- [x] 6.2 Create developer guide: `docs/guides/keyboard-accessibility.md`
+- [x] 6.3 Include code examples for implementing keyboard support
+- [x] 6.4 Document WCAG 2.1 Level AA keyboard criteria
+- [x] 6.5 Create checklist for future keyboard accessibility reviews
 
 ### Task 7: Add Unit Tests for Focus Management
 **Subtasks:**
@@ -316,7 +316,7 @@ function closeModal() {
 
 ## 📊 File List
 
-### Files Created (Tasks 1-4)
+### Files Created (Tasks 1-6)
 - `docs/KEYBOARD-AUDIT-REPORT.md` - Comprehensive keyboard navigation audit (Task 1)
 - `src/index.css` - Global focus styles (Task 2) ✓
 - `src/tests/focus-indicators.test.tsx` - 8 tests for focus styles (Task 2) ✓
@@ -327,6 +327,10 @@ function closeModal() {
 - `pages/__tests__/Settings.test.tsx` - 14 tests for Settings keyboard navigation (Task 3) ✓
 - `src/hooks/useFocusTrap.ts` - Focus trap hook for modals (Task 4) ✓
 - `src/tests/useFocusTrap.test.ts` - 13 tests for focus trap (Task 4) ✓
+- `docs/guides/keyboard-accessibility.md` - Developer guide with patterns & WCAG criteria (Task 6) ✓
+- `components/HelpModal.tsx` - User-facing help modal with keyboard shortcuts (Task 6) ✓
+- `components/__tests__/HelpModal.test.tsx` - 21 tests for help modal (Task 6) ✓
+- `product/checklists/keyboard-accessibility-checklist.md` - Review & QA checklist (Task 6) ✓
 
 ### Files Modified (Tasks 1-5)
 - `index.tsx` - Added CSS import for global focus styles (Task 2) ✓
@@ -388,7 +392,7 @@ _To be filled by developer after completion_
 ## 📝 Dev Agent Record
 
 ### Current Task
-Task 5: Fix Form Accessibility ✅ COMPLETE (All subtasks 5.1-5.6)
+Task 6: Create Keyboard Shortcuts Documentation ✅ COMPLETE (All subtasks 6.1-6.5)
 
 ### Debug Log
 
@@ -502,15 +506,48 @@ Task 5: Fix Form Accessibility ✅ COMPLETE (All subtasks 5.1-5.6)
   - Focus trap (from Task 4) manages tab navigation in modals
   - All interactive elements have focus-visible indicators
 
+**Task 6: Create Keyboard Shortcuts Documentation** ✅ COMPLETE (All Subtasks)
+- [x] 6.1 Document all keyboard shortcuts in Help section ✓
+  - Created HelpModal component with organized shortcut display
+  - Shows global shortcuts (Alt+V, Escape, Tab, etc.)
+  - Shows page-specific shortcuts (settings, forms, voice assistant)
+  - Interactive tips section for keyboard users
+  - Accessibility compliance information (WCAG 2.1 AA)
+- [x] 6.2 Create developer guide: `docs/guides/keyboard-accessibility.md` ✓
+  - Comprehensive 400+ line guide covering all aspects
+  - Implementation patterns for useKeyboardShortcut hook
+  - Focus management patterns with useFocusTrap
+  - Form accessibility best practices with code examples
+  - Complete WCAG 2.1 Level AA criteria explanation
+- [x] 6.3 Include code examples for implementing keyboard support ✓
+  - Code examples for global shortcuts
+  - Code examples for focus traps
+  - Code examples for form accessibility
+  - Code examples for CSS focus styles
+  - Testing examples with Vitest
+- [x] 6.4 Document WCAG 2.1 Level AA keyboard criteria ✓
+  - 2.1.1 Keyboard: All functionality keyboard accessible
+  - 2.1.2 No Keyboard Trap: Focus can move between elements
+  - 2.4.3 Focus Order: Tab order logical and complete
+  - 2.4.7 Focus Visible: 3px outline minimum, 3:1 contrast
+  - Character Key Shortcuts: Using modifiers, no conflicts
+- [x] 6.5 Create checklist for future keyboard accessibility reviews ✓
+  - Developer pre-submission checklist (12 categories, 50+ items)
+  - Code reviewer PR review guide (6 categories, red flags)
+  - QA manual testing checklist (8 categories)
+  - Accessibility audit final review (coverage, compliance)
+  - Common issues tracker with WCAG references
+
 ### Completion Summary
-**Tasks 1-5 COMPLETE.** Core keyboard accessibility and form accessibility implemented.
+**Tasks 1-6 COMPLETE.** Core implementation and documentation finished.
 - Task 1: Audit complete (40% baseline, comprehensive report)
 - Task 2: Focus indicators complete (global CSS, 8 tests)
-- Task 3: Keyboard navigation complete (Alt+V shortcut, form support, character selection navigation, 19 new tests)
-- Task 4: Modal focus management complete (focus trap, focus restoration, 13 tests)
-- Task 5: Form accessibility complete (labels, aria-required, aria-describedby, 95 tests total)
-- **Total: 95 tests passing** (up from initial ~50)
-- **Remaining: Tasks 6-8 (Documentation, Unit Tests, Final Audit)**
+- Task 3: Keyboard navigation complete (Alt+V, character selection, 19 tests)
+- Task 4: Modal focus management complete (focus trap, 13 tests)
+- Task 5: Form accessibility complete (labels, ARIA, 95 tests)
+- Task 6: Documentation complete (guide, component, checklist, 116 tests total)
+- **Total: 116 tests passing** (↑ from ~50 at start)
+- **Remaining: Tasks 7-8 (Additional tests and final audit)**
 
 ---
 
