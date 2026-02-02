@@ -84,7 +84,7 @@ export const getTermData = async (termId: string): Promise<TermData> => {
 
     console.log(`[getTermData] Cliente Gemini criado. Enviando requisição...`);
     const response = await ai.models.generateContent({
-      model: "gemini-1.5-flash", 
+      model: "gemini-pro", 
       contents: `You are a technical glossary for business executives. Define the term "${termId}".
       
       Requirements:
