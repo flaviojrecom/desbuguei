@@ -28,10 +28,10 @@ export const TermDetail = () => {
     setError(false);
     setShowRetry(false);
 
-    // Timer de segurança: Se demorar mais de 20s, mostra o botão de emergência
+    // Timer de segurança: Se demorar mais de 35s, mostra o botão de emergência
     const timeoutId = setTimeout(() => {
         setShowRetry(true);
-    }, 20000);
+    }, 35000);
 
     const fetchData = async () => {
       if (!termId) return;

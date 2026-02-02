@@ -50,6 +50,8 @@ export const getTermData = async (termId: string): Promise<TermData> => {
   const rawId = termId.toLowerCase().trim();
   const dbId = normalizeId(termId);
 
+  console.log(`[getTermData] Buscando termo: "${termId}" (rawId: "${rawId}", dbId: "${dbId}")`);
+
   // 1. STRATEGY: READ-THROUGH CACHING (Supabase -> Cache Miss -> Gemini -> Save)
 
   // A. Check Supabase (The Source of Truth)
@@ -77,8 +79,10 @@ export const getTermData = async (termId: string): Promise<TermData> => {
 
   // C. Generate with Gemini (Cache Miss)
   try {
+    console.log(`[getTermData] Cache miss - tentando gerar com Gemini...`);
     const ai = getAIClient(); // Inicializa aqui para evitar erros globais
 
+    console.log(`[getTermData] Cliente Gemini criado. Enviando requisição...`);
     const response = await ai.models.generateContent({
       model: "gemini-2.0-flash", 
       contents: `You are a technical glossary for business executives. Define the term "${termId}".
@@ -160,13 +164,19 @@ export const getTermData = async (termId: string): Promise<TermData> => {
           });
       }
 
+      console.log(`[getTermData] Sucesso! Termo gerado e salvo.`);
       return data;
     }
   } catch (error) {
-    console.error("AI Generation failed:", error);
+    console.error("[getTermData] AI Generation failed:", error);
+    if (error instanceof Error) {
+      console.error("[getTermData] Erro detalhado:", error.message);
+      console.error("[getTermData] Stack:", error.stack);
+    }
     // Se falhar por falta de API Key, o erro será logado aqui, mas não crashea o app inteiro
   }
 
+  console.error(`[getTermData] FALHOU: Termo "${termId}" não encontrado em nenhuma fonte`);
   throw new Error("Termo não encontrado.");
 };
 
