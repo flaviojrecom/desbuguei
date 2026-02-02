@@ -1,34 +1,28 @@
 
+/**
+ * Safe access to environment variables injected by Vite at build time.
+ * Uses global constants (__GEMINI_API_KEY__, etc.) instead of import.meta.env
+ * to prevent accidental exposure in source maps.
+ */
 export const getEnv = (key: string): string => {
-  // O Vite substitui essas variáveis estaticamente durante o build.
-  // O acesso dinâmico (env[key]) falha em produção, por isso usamos switch/case explícito.
-
   try {
     switch (key) {
       case 'VITE_GEMINI_API_KEY':
-        // @ts-ignore
-        const geminiKey = import.meta.env.VITE_GEMINI_API_KEY || '';
-        if (!geminiKey) {
-          console.warn('[getEnv] VITE_GEMINI_API_KEY não configurada!');
-        } else {
-          console.log('[getEnv] VITE_GEMINI_API_KEY carregada com sucesso (primeiros 10 chars):', geminiKey.substring(0, 10) + '...');
+        // Using global constant injected by Vite (safe - not in source code)
+        if (typeof __GEMINI_API_KEY__ !== 'undefined' && __GEMINI_API_KEY__) {
+          return __GEMINI_API_KEY__;
         }
-        return geminiKey;
-      case 'API_KEY':
-        // @ts-ignore
-        return import.meta.env.VITE_API_KEY || '';
-      case 'ADMIN_PASSWORD':
-        // @ts-ignore
-        return import.meta.env.VITE_ADMIN_PASSWORD || '';
+        console.warn('[getEnv] VITE_GEMINI_API_KEY não configurada!');
+        return '';
       case 'SUPABASE_URL':
         // @ts-ignore
-        return import.meta.env.VITE_SUPABASE_URL || '';
+        return typeof __SUPABASE_URL__ !== 'undefined' ? __SUPABASE_URL__ : '';
       case 'SUPABASE_ANON_KEY':
         // @ts-ignore
-        return import.meta.env.VITE_SUPABASE_ANON_KEY || '';
+        return typeof __SUPABASE_ANON_KEY__ !== 'undefined' ? __SUPABASE_ANON_KEY__ : '';
       case 'SENTRY_DSN':
         // @ts-ignore
-        return import.meta.env.VITE_SENTRY_DSN || '';
+        return typeof __SENTRY_DSN__ !== 'undefined' ? __SENTRY_DSN__ : '';
       default:
         return '';
     }
