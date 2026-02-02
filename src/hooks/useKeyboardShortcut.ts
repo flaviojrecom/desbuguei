@@ -43,6 +43,9 @@ export function useKeyboardShortcut(
   // Memoize the handler to avoid recreating it unnecessarily
   const handleKeyDown = useCallback(
     (event: KeyboardEvent) => {
+      // Check if key is defined
+      if (!key) return;
+
       // Check if the pressed key matches (case-insensitive for letter keys)
       const keyMatches =
         key.toLowerCase() === event.key.toLowerCase() ||

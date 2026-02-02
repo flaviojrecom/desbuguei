@@ -84,7 +84,7 @@ export const getTermData = async (termId: string): Promise<TermData> => {
 
     console.log(`[getTermData] Cliente Gemini criado. Enviando requisição...`);
     const response = await ai.models.generateContent({
-      model: "gemini-2.0-flash", 
+      model: "gemini-1.5-flash", 
       contents: `You are a technical glossary for business executives. Define the term "${termId}".
       
       Requirements:
@@ -137,7 +137,8 @@ export const getTermData = async (termId: string): Promise<TermData> => {
     });
 
     if (response.text) {
-      const data = JSON.parse(response.text) as TermData;
+      try {
+        const data = JSON.parse(response.text) as TermData;
       data.id = dbId; // Enforce consistent ID
       
       // Defaults
@@ -166,6 +167,11 @@ export const getTermData = async (termId: string): Promise<TermData> => {
 
       console.log(`[getTermData] Sucesso! Termo gerado e salvo.`);
       return data;
+      } catch (jsonError) {
+        console.error("[getTermData] JSON parse error - resposta malformada:", jsonError);
+        console.error("[getTermData] Resposta recebida:", response.text?.substring(0, 500) + "...");
+        throw new Error("API retornou JSON inválido. Tente novamente em alguns instantes.");
+      }
     }
   } catch (error) {
     console.error("[getTermData] AI Generation failed:", error);
