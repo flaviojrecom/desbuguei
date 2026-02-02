@@ -11,7 +11,7 @@ const SidebarItem = ({ to, icon, label, filled = false }: { to: string; icon: st
         `flex items-center gap-4 px-4 py-3 rounded-2xl transition-all duration-200 group ${
           isActive
             ? 'bg-primary/10 text-primary border border-primary/20 shadow-[0_0_15px_-5px_rgba(var(--color-primary),0.3)]'
-            : 'text-slate-500 hover:bg-night-panel hover:text-primary hover:border-primary/20 hover:shadow-sm'
+            : 'text-slate-400 hover:bg-night-panel hover:text-primary hover:border-primary/20 hover:shadow-sm'
         }`
       }
     >
@@ -28,6 +28,12 @@ const SidebarItem = ({ to, icon, label, filled = false }: { to: string; icon: st
 export const Layout = () => {
   return (
     <div className="flex h-screen w-full overflow-hidden relative">
+      <a
+        href="#main-content"
+        className="sr-only focus:not-sr-only focus:absolute focus:top-0 focus:left-0 focus:z-50 focus:bg-primary focus:text-black focus:p-3 focus:rounded"
+      >
+        Pular para conteúdo principal
+      </a>
       <VoiceAssistant />
       
       {/* Sidebar Component */}
@@ -64,14 +70,14 @@ export const Layout = () => {
       </aside>
 
       {/* Main Content Area */}
-      <main className="flex-1 relative flex flex-col h-full overflow-hidden bg-night-bg">
+      <main id="main-content" className="flex-1 relative flex flex-col h-full overflow-hidden bg-night-bg">
         <div className="flex-1 overflow-y-auto scroll-smooth">
           <Outlet />
         </div>
         
         {/* Persistent Bottom Bar */}
         <div className="w-full bg-night-panel/80 backdrop-blur-md border-t border-night-border py-3 px-6 flex justify-center items-center z-10 flex-shrink-0">
-            <div className="flex items-center gap-2 text-[11px] tracking-widest text-slate-500">
+            <div className="flex items-center gap-2 text-[11px] tracking-widest text-slate-300">
                 <span className="material-symbols-outlined text-sm text-primary animate-pulse">terminal</span>
                 <span className="uppercase font-bold">Compilando conhecimento... <span className="text-primary">Enjoy.</span></span>
                 <span className="ml-1 flex items-baseline gap-1 opacity-80 hover:opacity-100 transition-opacity">

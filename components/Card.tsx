@@ -100,13 +100,14 @@ export const TermCard: React.FC<TermCardProps> = ({
           <div className="h-5"></div>
         )}
         
-        <button 
+        <button
           type="button"
           onClick={handleFavoriteClick}
-          className={`flex items-center justify-center transition-colors z-20 ${heartHoverColor}`}
+          aria-label={favorited ? "Remover dos favoritos" : "Adicionar aos favoritos"}
           title={favorited ? "Remover dos favoritos" : "Adicionar aos favoritos"}
+          className={`flex items-center justify-center transition-colors z-20 ${heartHoverColor}`}
         >
-          <span className={`material-symbols-outlined text-lg ${favorited ? `icon-filled ${heartActiveColor}` : 'text-slate-400'}`}>
+          <span className={`material-symbols-outlined text-lg ${favorited ? `icon-filled ${heartActiveColor}` : 'text-slate-400'}`} aria-hidden="true">
             favorite
           </span>
         </button>
@@ -114,5 +115,5 @@ export const TermCard: React.FC<TermCardProps> = ({
     </div>
   );
 
-  return <Link to={linkTarget} className="h-full block">{content}</Link>;
+  return <Link to={linkTarget} className="h-full block focus:outline-none focus:ring-2 focus:ring-primary/50 rounded-2xl focus:ring-offset-2" style={{ borderRadius: '1rem' }}>{content}</Link>;
 };
