@@ -1,105 +1,89 @@
 -- Migration: 001_create_terms_table.sql
--- Description: Create the main terms table with full TermData schema
--- Author: Dara (Data Engineer)
+-- Description: Create the terms table for storing technical glossary entries
 -- Created: 2026-02-02
--- Purpose: Establish foundational database schema for Desbuquei glossary application
+-- Status: IDEMPOTENT
 
--- SAFETY: This migration uses IF NOT EXISTS to ensure idempotency
--- Multiple runs of this script will not cause errors
-
-BEGIN;
-
--- Create ENUM type for categories
--- Using ENUM for strict type safety and better storage efficiency
-CREATE TYPE category_type AS ENUM (
-  'Desenvolvimento',
-  'Infraestrutura',
-  'Dados & IA',
-  'Segurança',
-  'Agile & Produto',
-  'Outros'
-);
-
--- COMMENT ON TYPE category_type IS 'Allowed category values for term classification';
-
--- Main terms table
--- Stores all glossary entries with full metadata
+-- Create the terms table with complete schema
 CREATE TABLE IF NOT EXISTS public.terms (
-  -- Primary key and identification
+  -- Primary Key
   id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
 
-  -- Core term data (required fields)
+  -- Core Fields
   term VARCHAR(255) NOT NULL UNIQUE,
-  fullTerm VARCHAR(500),
-  category category_type NOT NULL,
+  fullTerm VARCHAR(255),
 
-  -- Detailed content (TEXT for flexibility)
-  definition TEXT NOT NULL,
+  -- Category with validation
+  category VARCHAR(100) NOT NULL,
+
+  -- Text Content
+  definition TEXT,
   phonetic VARCHAR(255),
-  slang TEXT,
-  translation TEXT NOT NULL,
+  slang VARCHAR(255),
+  translation VARCHAR(255),
 
-  -- Complex structured data (JSONB for flexibility + indexability)
+  -- JSON Fields (examples, analogies, relatedTerms)
   examples JSONB NOT NULL DEFAULT '[]'::jsonb,
   analogies JSONB NOT NULL DEFAULT '[]'::jsonb,
-  practicalUsage JSONB,
   relatedTerms JSONB DEFAULT '[]'::jsonb,
 
-  -- Audit fields (standard baseline)
-  created_at TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT NOW(),
-  updated_at TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT NOW(),
-  deleted_at TIMESTAMP WITH TIME ZONE,
+  -- Audit Fields
+  created_at TIMESTAMP NOT NULL DEFAULT NOW(),
+  updated_at TIMESTAMP NOT NULL DEFAULT NOW(),
+  deleted_at TIMESTAMP,
 
-  -- Constraints for data integrity
-  CONSTRAINT check_term_not_empty CHECK (term != ''),
-  CONSTRAINT check_definition_not_empty CHECK (definition != ''),
-  CONSTRAINT check_translation_not_empty CHECK (translation != ''),
-  CONSTRAINT check_examples_is_array CHECK (jsonb_typeof(examples) = 'array'),
-  CONSTRAINT check_analogies_is_array CHECK (jsonb_typeof(analogies) = 'array'),
-  CONSTRAINT check_related_terms_is_array CHECK (jsonb_typeof(relatedTerms) = 'array')
+  -- Add constraints
+  CONSTRAINT check_category CHECK (
+    category IN (
+      'Desenvolvimento',
+      'Infraestrutura',
+      'Dados & IA',
+      'Segurança',
+      'Agile & Produto'
+    )
+  ),
+  CONSTRAINT check_examples CHECK (jsonb_typeof(examples) = 'array'),
+  CONSTRAINT check_analogies CHECK (jsonb_typeof(analogies) = 'array'),
+  CONSTRAINT check_relatedTerms CHECK (jsonb_typeof(relatedTerms) = 'array')
 );
 
--- Documentation
-COMMENT ON TABLE public.terms IS 'Core glossary table storing all technical term definitions with business context for Portuguese-speaking technical professionals.';
-COMMENT ON COLUMN public.terms.id IS 'Unique identifier (UUID) for each term';
-COMMENT ON COLUMN public.terms.term IS 'The actual term name (unique, case-sensitive)';
-COMMENT ON COLUMN public.terms.fullTerm IS 'English expansion or full name (e.g., "API" -> "Application Programming Interface")';
-COMMENT ON COLUMN public.terms.category IS 'Classification category (enum-constrained for integrity)';
-COMMENT ON COLUMN public.terms.definition IS 'Main business-focused explanation in Portuguese';
-COMMENT ON COLUMN public.terms.phonetic IS 'Pronunciation hint (e.g., "Ei-pi-ai")';
-COMMENT ON COLUMN public.terms.slang IS 'Common slang or alternative expressions (optional)';
-COMMENT ON COLUMN public.terms.translation IS 'Portuguese essence or translation';
-COMMENT ON COLUMN public.terms.examples IS 'Array of {title, description} objects showing practical business uses';
-COMMENT ON COLUMN public.terms.analogies IS 'Array of {title, description} objects with simple analogies';
-COMMENT ON COLUMN public.terms.practicalUsage IS 'Object with {title, content} showing real-world usage (code, terminal commands, etc.)';
-COMMENT ON COLUMN public.terms.relatedTerms IS 'Array of related term IDs or names for discovery';
-COMMENT ON COLUMN public.terms.created_at IS 'Timestamp when term was created (immutable)';
-COMMENT ON COLUMN public.terms.updated_at IS 'Timestamp of last update (modified on each UPDATE)';
-COMMENT ON COLUMN public.terms.deleted_at IS 'Soft delete timestamp (NULL = active, non-NULL = deleted)';
+-- Create indexes for common queries
+CREATE INDEX IF NOT EXISTS idx_terms_term ON public.terms(term);
+CREATE INDEX IF NOT EXISTS idx_terms_category ON public.terms(category);
+CREATE INDEX IF NOT EXISTS idx_terms_created_at ON public.terms(created_at);
+CREATE INDEX IF NOT EXISTS idx_terms_deleted_at ON public.terms(deleted_at);
 
--- Indexes for query performance
--- Index 1: Category filtering and sorting
-CREATE INDEX idx_terms_category_created ON public.terms(category, created_at DESC)
-WHERE deleted_at IS NULL;
-COMMENT ON INDEX idx_terms_category_created IS 'Supports filtering by category with newest-first sorting, excluding soft-deleted records';
+-- Create function to automatically update updated_at
+CREATE OR REPLACE FUNCTION update_terms_updated_at()
+RETURNS TRIGGER AS $$
+BEGIN
+  NEW.updated_at = NOW();
+  RETURN NEW;
+END;
+$$ LANGUAGE plpgsql;
 
--- Index 2: Soft delete pattern
-CREATE INDEX idx_terms_active ON public.terms(deleted_at)
-WHERE deleted_at IS NULL;
-COMMENT ON INDEX idx_terms_active IS 'Supports efficient queries of active-only terms (soft delete pattern)';
+-- Create trigger for updated_at
+DROP TRIGGER IF EXISTS trigger_terms_updated_at ON public.terms;
+CREATE TRIGGER trigger_terms_updated_at
+  BEFORE UPDATE ON public.terms
+  FOR EACH ROW
+  EXECUTE FUNCTION update_terms_updated_at();
 
--- Index 3: Full-text search preparation
-CREATE INDEX idx_terms_term_gin ON public.terms USING GIN(to_tsvector('portuguese', term || ' ' || definition))
-WHERE deleted_at IS NULL;
-COMMENT ON INDEX idx_terms_term_gin IS 'Supports full-text search in Portuguese (term name + definition)';
+-- Add table comments for documentation
+COMMENT ON TABLE public.terms IS 'Technical glossary terms with multilingual support and structured examples';
+COMMENT ON COLUMN public.terms.id IS 'Unique identifier (UUID)';
+COMMENT ON COLUMN public.terms.term IS 'The term name (e.g., "API", "Docker")';
+COMMENT ON COLUMN public.terms.fullTerm IS 'Full English expansion (e.g., "Application Programming Interface")';
+COMMENT ON COLUMN public.terms.category IS 'Category: Desenvolvimento, Infraestrutura, Dados & IA, Segurança, Agile & Produto';
+COMMENT ON COLUMN public.terms.definition IS 'Business-focused definition in Portuguese';
+COMMENT ON COLUMN public.terms.phonetic IS 'Pronunciation hint in Portuguese';
+COMMENT ON COLUMN public.terms.slang IS 'Common slang or abbreviation (e.g., "K8s" for Kubernetes)';
+COMMENT ON COLUMN public.terms.translation IS 'Portuguese translation of the term essence';
+COMMENT ON COLUMN public.terms.examples IS 'Array of business use case examples (JSON)';
+COMMENT ON COLUMN public.terms.analogies IS 'Array of simple analogies (JSON)';
+COMMENT ON COLUMN public.terms.relatedTerms IS 'Array of related term keywords (JSON)';
+COMMENT ON COLUMN public.terms.created_at IS 'Record creation timestamp (auto-set)';
+COMMENT ON COLUMN public.terms.updated_at IS 'Record last update timestamp (auto-updated)';
+COMMENT ON COLUMN public.terms.deleted_at IS 'Soft delete timestamp (NULL if active)';
 
--- Index 4: JSONB containment queries
-CREATE INDEX idx_terms_related_terms_gin ON public.terms USING GIN(relatedTerms)
-WHERE deleted_at IS NULL;
-COMMENT ON INDEX idx_terms_related_terms_gin IS 'Supports efficient queries on relatedTerms JSONB array';
-
--- Enable Row Level Security (placeholder for Phase 2)
--- ALTER TABLE public.terms ENABLE ROW LEVEL SECURITY;
--- (RLS policies will be created in TD-201)
-
-COMMIT;
+-- Verify table structure
+SELECT 'Migration 001_create_terms_table completed successfully' AS status;

@@ -2,9 +2,18 @@
 export const getEnv = (key: string): string => {
   // O Vite substitui essas variáveis estaticamente durante o build.
   // O acesso dinâmico (env[key]) falha em produção, por isso usamos switch/case explícito.
-  
+
   try {
     switch (key) {
+      case 'VITE_GEMINI_API_KEY':
+        // @ts-ignore
+        const geminiKey = import.meta.env.VITE_GEMINI_API_KEY || '';
+        if (!geminiKey) {
+          console.warn('[getEnv] VITE_GEMINI_API_KEY não configurada!');
+        } else {
+          console.log('[getEnv] VITE_GEMINI_API_KEY carregada com sucesso (primeiros 10 chars):', geminiKey.substring(0, 10) + '...');
+        }
+        return geminiKey;
       case 'API_KEY':
         // @ts-ignore
         return import.meta.env.VITE_API_KEY || '';
@@ -24,7 +33,7 @@ export const getEnv = (key: string): string => {
         return '';
     }
   } catch (e) {
-    console.warn('Erro ao ler variável de ambiente:', key);
+    console.warn('[getEnv] Erro ao ler variável de ambiente:', key);
     return '';
   }
 };
