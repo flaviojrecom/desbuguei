@@ -1,0 +1,198 @@
+/* Design Tokens - CSS Variables
+ * Generated from design-tokens.json (W3C Design Tokens Community Group format)
+ * Author: Uma (UX Design Expert)
+ * Date: 2026-02-02
+ *
+ * Usage: Import this file or include in your CSS build process
+ * All values exported as CSS custom properties (variables)
+ */
+
+:root {
+  /* ============================================================================
+   * COLOR TOKENS
+   * ============================================================================ */
+
+  /* Primary Colors */
+  --color-primary: #3B82F6;
+  --color-primary-dark: #1E40AF;
+
+  /* Secondary Colors */
+  --color-secondary: #10B981;
+  --color-secondary-dark: #059669;
+
+  /* Background Colors - Light Theme */
+  --color-background-light: #FFFFFF;
+
+  /* Background Colors - Dark Theme */
+  --color-background-dark: #0F172A;
+
+  /* Text Colors - Light Theme */
+  --color-text-light-primary: #1F2937;
+  --color-text-light-secondary: #6B7280;
+
+  /* Text Colors - Dark Theme */
+  --color-text-dark-primary: #F9FAFB;
+  --color-text-dark-secondary: #D1D5DB;
+
+  /* Category Colors */
+  --color-category-desenvolvimento: #8B5CF6;
+  --color-category-infraestrutura: #06B6D4;
+  --color-category-dados-ia: #EC4899;
+  --color-category-seguranca: #EF4444;
+  --color-category-agile-produto: #F59E0B;
+  --color-category-outros: #6B7280;
+
+  /* ============================================================================
+   * TYPOGRAPHY TOKENS
+   * ============================================================================ */
+
+  /* Font Families */
+  --typography-font-family-base: -apple-system, BlinkMacSystemFont, 'Segoe UI',
+    Roboto, sans-serif;
+  --typography-font-family-mono: 'Monaco', 'Courier New', monospace;
+
+  /* Font Sizes */
+  --typography-font-size-xs: 0.75rem; /* 12px */
+  --typography-font-size-sm: 0.875rem; /* 14px */
+  --typography-font-size-base: 1rem; /* 16px */
+  --typography-font-size-lg: 1.125rem; /* 18px */
+  --typography-font-size-xl: 1.25rem; /* 20px */
+  --typography-font-size-2xl: 1.5rem; /* 24px */
+  --typography-font-size-3xl: 1.875rem; /* 30px */
+
+  /* Font Weights */
+  --typography-font-weight-light: 300;
+  --typography-font-weight-normal: 400;
+  --typography-font-weight-medium: 500;
+  --typography-font-weight-semibold: 600;
+  --typography-font-weight-bold: 700;
+
+  /* Line Heights */
+  --typography-line-height-tight: 1.25;
+  --typography-line-height-normal: 1.5;
+  --typography-line-height-relaxed: 1.75;
+
+  /* ============================================================================
+   * SPACING TOKENS
+   * ============================================================================ */
+
+  /* Spacing Scale (4px base unit) */
+  --spacing-0: 0;
+  --spacing-1: 0.25rem; /* 4px */
+  --spacing-2: 0.5rem; /* 8px */
+  --spacing-3: 0.75rem; /* 12px */
+  --spacing-4: 1rem; /* 16px */
+  --spacing-5: 1.25rem; /* 20px */
+  --spacing-6: 1.5rem; /* 24px */
+  --spacing-8: 2rem; /* 32px */
+  --spacing-10: 2.5rem; /* 40px */
+  --spacing-12: 3rem; /* 48px */
+  --spacing-16: 4rem; /* 64px */
+
+  /* ============================================================================
+   * BORDER RADIUS TOKENS
+   * ============================================================================ */
+
+  /* Border Radius Scale */
+  --border-radius-none: 0;
+  --border-radius-sm: 0.125rem; /* 2px */
+  --border-radius-base: 0.25rem; /* 4px */
+  --border-radius-md: 0.375rem; /* 6px */
+  --border-radius-lg: 0.5rem; /* 8px */
+  --border-radius-xl: 0.75rem; /* 12px */
+  --border-radius-2xl: 1rem; /* 16px */
+  --border-radius-full: 9999px; /* Pill shape */
+
+  /* ============================================================================
+   * SHADOW TOKENS
+   * ============================================================================ */
+
+  /* Elevation Shadows */
+  --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+  --shadow-base: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
+  --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1),
+    0 2px 4px -1px rgba(0, 0, 0, 0.06);
+  --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1),
+    0 4px 6px -2px rgba(0, 0, 0, 0.05);
+
+  /* ============================================================================
+   * DURATION TOKENS (ANIMATIONS)
+   * ============================================================================ */
+
+  /* Animation Timings */
+  --duration-fast: 150ms;
+  --duration-normal: 300ms;
+  --duration-slow: 500ms;
+
+  /* Animation Easing (default: cubic-bezier(0.4, 0, 0.2, 1)) */
+  --easing-default: cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* ============================================================================
+ * DARK MODE OVERRIDES
+ * ============================================================================
+ * Apply these in dark mode (e.g., [data-theme='dark'] or @media (prefers-color-scheme: dark))
+ */
+@media (prefers-color-scheme: dark) {
+  :root {
+    --color-background: var(--color-background-dark);
+    --color-text-primary: var(--color-text-dark-primary);
+    --color-text-secondary: var(--color-text-dark-secondary);
+  }
+}
+
+/* Light mode as default */
+:root {
+  --color-background: var(--color-background-light);
+  --color-text-primary: var(--color-text-light-primary);
+  --color-text-secondary: var(--color-text-light-secondary);
+}
+
+/* ============================================================================
+ * USAGE EXAMPLES
+ * ============================================================================
+
+Button Primary:
+.button-primary {
+  background-color: var(--color-primary);
+  color: var(--color-text-light-primary);
+  padding: var(--spacing-4) var(--spacing-6);
+  border-radius: var(--border-radius-lg);
+  font-size: var(--typography-font-size-base);
+  font-weight: var(--typography-font-weight-medium);
+  transition: all var(--duration-normal) var(--easing-default);
+}
+
+.button-primary:hover {
+  background-color: var(--color-primary-dark);
+  box-shadow: var(--shadow-md);
+}
+
+Heading:
+.heading-h1 {
+  font-family: var(--typography-font-family-base);
+  font-size: var(--typography-font-size-3xl);
+  font-weight: var(--typography-font-weight-bold);
+  line-height: var(--typography-line-height-tight);
+  margin-bottom: var(--spacing-4);
+}
+
+Card:
+.card {
+  background-color: var(--color-background);
+  padding: var(--spacing-6);
+  border-radius: var(--border-radius-lg);
+  box-shadow: var(--shadow-base);
+}
+
+Tag - Development Category:
+.tag-desenvolvimento {
+  background-color: var(--color-category-desenvolvimento);
+  color: white;
+  padding: var(--spacing-2) var(--spacing-3);
+  border-radius: var(--border-radius-full);
+  font-size: var(--typography-font-size-xs);
+  font-weight: var(--typography-font-weight-semibold);
+}
+
+ * ============================================================================ */

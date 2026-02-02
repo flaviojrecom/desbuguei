@@ -1,0 +1,338 @@
+{
+  "$schema": "https://tokens.studio/schemas/json/token-types-schema-latest.json",
+  "$version": "1.0.0",
+  "metadata": {
+    "name": "Desbuquei Design Tokens",
+    "version": "1.0.0",
+    "description": "W3C Design Tokens for Desbuquei glossary application",
+    "author": "Uma (UX Design Expert)",
+    "created": "2026-02-02",
+    "baseUrl": "https://desbuquei.com",
+    "documentation": "docs/design-system/TOKENS.md"
+  },
+  "colors": {
+    "primary": {
+      "value": "#3B82F6",
+      "type": "color",
+      "description": "Primary brand color (blue)"
+    },
+    "primaryDark": {
+      "value": "#1E40AF",
+      "type": "color",
+      "description": "Primary color dark variant"
+    },
+    "secondary": {
+      "value": "#10B981",
+      "type": "color",
+      "description": "Secondary accent color (emerald)"
+    },
+    "secondaryDark": {
+      "value": "#059669",
+      "type": "color",
+      "description": "Secondary color dark variant"
+    },
+    "background": {
+      "light": {
+        "value": "#FFFFFF",
+        "type": "color",
+        "description": "Light mode background"
+      },
+      "dark": {
+        "value": "#0F172A",
+        "type": "color",
+        "description": "Dark mode background"
+      }
+    },
+    "text": {
+      "light": {
+        "primary": {
+          "value": "#1F2937",
+          "type": "color",
+          "description": "Light mode primary text"
+        },
+        "secondary": {
+          "value": "#6B7280",
+          "type": "color",
+          "description": "Light mode secondary text"
+        }
+      },
+      "dark": {
+        "primary": {
+          "value": "#F9FAFB",
+          "type": "color",
+          "description": "Dark mode primary text"
+        },
+        "secondary": {
+          "value": "#D1D5DB",
+          "type": "color",
+          "description": "Dark mode secondary text"
+        }
+      }
+    },
+    "category": {
+      "desenvolvimento": {
+        "value": "#8B5CF6",
+        "type": "color",
+        "description": "Category color: Desenvolvimento (purple)"
+      },
+      "infraestrutura": {
+        "value": "#06B6D4",
+        "type": "color",
+        "description": "Category color: Infraestrutura (cyan)"
+      },
+      "dadosIA": {
+        "value": "#EC4899",
+        "type": "color",
+        "description": "Category color: Dados & IA (pink)"
+      },
+      "seguranca": {
+        "value": "#EF4444",
+        "type": "color",
+        "description": "Category color: Segurança (red)"
+      },
+      "agileProtudo": {
+        "value": "#F59E0B",
+        "type": "color",
+        "description": "Category color: Agile & Produto (amber)"
+      },
+      "outros": {
+        "value": "#6B7280",
+        "type": "color",
+        "description": "Category color: Outros (gray)"
+      }
+    }
+  },
+  "typography": {
+    "fontFamily": {
+      "base": {
+        "value": "-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif",
+        "type": "fontFamilies",
+        "description": "System font stack for body text"
+      },
+      "mono": {
+        "value": "'Monaco', 'Courier New', monospace",
+        "type": "fontFamilies",
+        "description": "Monospace font for code blocks"
+      }
+    },
+    "fontSize": {
+      "xs": {
+        "value": "0.75rem",
+        "type": "fontSizes",
+        "description": "Extra small: 12px"
+      },
+      "sm": {
+        "value": "0.875rem",
+        "type": "fontSizes",
+        "description": "Small: 14px"
+      },
+      "base": {
+        "value": "1rem",
+        "type": "fontSizes",
+        "description": "Base: 16px"
+      },
+      "lg": {
+        "value": "1.125rem",
+        "type": "fontSizes",
+        "description": "Large: 18px"
+      },
+      "xl": {
+        "value": "1.25rem",
+        "type": "fontSizes",
+        "description": "Extra large: 20px"
+      },
+      "2xl": {
+        "value": "1.5rem",
+        "type": "fontSizes",
+        "description": "2XL: 24px"
+      },
+      "3xl": {
+        "value": "1.875rem",
+        "type": "fontSizes",
+        "description": "3XL: 30px"
+      }
+    },
+    "fontWeight": {
+      "light": {
+        "value": "300",
+        "type": "fontWeights",
+        "description": "Light weight"
+      },
+      "normal": {
+        "value": "400",
+        "type": "fontWeights",
+        "description": "Normal weight"
+      },
+      "medium": {
+        "value": "500",
+        "type": "fontWeights",
+        "description": "Medium weight"
+      },
+      "semibold": {
+        "value": "600",
+        "type": "fontWeights",
+        "description": "Semi-bold weight"
+      },
+      "bold": {
+        "value": "700",
+        "type": "fontWeights",
+        "description": "Bold weight"
+      }
+    },
+    "lineHeight": {
+      "tight": {
+        "value": "1.25",
+        "type": "lineHeights",
+        "description": "Tight line height: 125%"
+      },
+      "normal": {
+        "value": "1.5",
+        "type": "lineHeights",
+        "description": "Normal line height: 150%"
+      },
+      "relaxed": {
+        "value": "1.75",
+        "type": "lineHeights",
+        "description": "Relaxed line height: 175%"
+      }
+    }
+  },
+  "spacing": {
+    "0": {
+      "value": "0",
+      "type": "spacing",
+      "description": "No spacing"
+    },
+    "1": {
+      "value": "0.25rem",
+      "type": "spacing",
+      "description": "4px"
+    },
+    "2": {
+      "value": "0.5rem",
+      "type": "spacing",
+      "description": "8px"
+    },
+    "3": {
+      "value": "0.75rem",
+      "type": "spacing",
+      "description": "12px"
+    },
+    "4": {
+      "value": "1rem",
+      "type": "spacing",
+      "description": "16px"
+    },
+    "5": {
+      "value": "1.25rem",
+      "type": "spacing",
+      "description": "20px"
+    },
+    "6": {
+      "value": "1.5rem",
+      "type": "spacing",
+      "description": "24px"
+    },
+    "8": {
+      "value": "2rem",
+      "type": "spacing",
+      "description": "32px"
+    },
+    "10": {
+      "value": "2.5rem",
+      "type": "spacing",
+      "description": "40px"
+    },
+    "12": {
+      "value": "3rem",
+      "type": "spacing",
+      "description": "48px"
+    },
+    "16": {
+      "value": "4rem",
+      "type": "spacing",
+      "description": "64px"
+    }
+  },
+  "borderRadius": {
+    "none": {
+      "value": "0",
+      "type": "borderRadius",
+      "description": "No border radius"
+    },
+    "sm": {
+      "value": "0.125rem",
+      "type": "borderRadius",
+      "description": "Small radius: 2px"
+    },
+    "base": {
+      "value": "0.25rem",
+      "type": "borderRadius",
+      "description": "Base radius: 4px"
+    },
+    "md": {
+      "value": "0.375rem",
+      "type": "borderRadius",
+      "description": "Medium radius: 6px"
+    },
+    "lg": {
+      "value": "0.5rem",
+      "type": "borderRadius",
+      "description": "Large radius: 8px"
+    },
+    "xl": {
+      "value": "0.75rem",
+      "type": "borderRadius",
+      "description": "Extra large radius: 12px"
+    },
+    "2xl": {
+      "value": "1rem",
+      "type": "borderRadius",
+      "description": "2XL radius: 16px"
+    },
+    "full": {
+      "value": "9999px",
+      "type": "borderRadius",
+      "description": "Full (pill shape)"
+    }
+  },
+  "shadow": {
+    "sm": {
+      "value": "0 1px 2px 0 rgba(0, 0, 0, 0.05)",
+      "type": "shadow",
+      "description": "Small shadow"
+    },
+    "base": {
+      "value": "0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06)",
+      "type": "shadow",
+      "description": "Base shadow"
+    },
+    "md": {
+      "value": "0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06)",
+      "type": "shadow",
+      "description": "Medium shadow"
+    },
+    "lg": {
+      "value": "0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05)",
+      "type": "shadow",
+      "description": "Large shadow"
+    }
+  },
+  "duration": {
+    "fast": {
+      "value": "150ms",
+      "type": "duration",
+      "description": "Fast animation: 150ms"
+    },
+    "normal": {
+      "value": "300ms",
+      "type": "duration",
+      "description": "Normal animation: 300ms"
+    },
+    "slow": {
+      "value": "500ms",
+      "type": "duration",
+      "description": "Slow animation: 500ms"
+    }
+  }
+}
