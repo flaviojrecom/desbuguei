@@ -115,5 +115,5 @@ export const TermCard: React.FC<TermCardProps> = ({
     </div>
   );
 
-  return <Link to={linkTarget} className="h-full block focus:outline-none focus:ring-2 focus:ring-primary/50 rounded-2xl focus:ring-offset-2" style={{ borderRadius: '1rem' }}>{content}</Link>;
+  return <Link to={linkTarget} className="h-full block rounded-2xl transition-all" style={{ borderRadius: '1rem' }}>{content}</Link>;
 };

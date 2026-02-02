@@ -1,0 +1,119 @@
+/* Global Styles for Desbuquei
+ * Including focus indicators for keyboard accessibility
+ * WCAG 2.1 Level AA compliance
+ */
+
+@import url('./tokens.css');
+
+/* ============================================================================
+ * FOCUS STYLES (Keyboard Navigation)
+ * ============================================================================
+ * Using :focus-visible to show focus only on keyboard interaction, not mouse
+ * 3px solid outline with primary color and 2px offset
+ */
+
+/* Global focus styles for all interactive elements */
+:focus-visible {
+  outline: 3px solid var(--color-primary);
+  outline-offset: 2px;
+}
+
+/* Buttons */
+button:focus-visible {
+  outline: 3px solid var(--color-primary);
+  outline-offset: 2px;
+}
+
+/* Links */
+a:focus-visible {
+  outline: 3px solid var(--color-primary);
+  outline-offset: 2px;
+  border-radius: 0.25rem;
+}
+
+/* Form inputs */
+input:focus-visible,
+select:focus-visible,
+textarea:focus-visible {
+  outline: 3px solid var(--color-primary);
+  outline-offset: 2px;
+}
+
+/* Remove default outline to avoid double outline */
+:focus {
+  outline: none;
+}
+
+/* Dark mode: ensure focus outline is visible on dark backgrounds */
+@media (prefers-color-scheme: dark) {
+  :focus-visible {
+    outline-color: var(--color-primary);
+    box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.1);
+  }
+}
+
+/* Light mode: focus outline */
+@media (prefers-color-scheme: light) {
+  :focus-visible {
+    outline-color: var(--color-primary);
+    box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.15);
+  }
+}
+
+/* ============================================================================
+ * SKIP TO MAIN CONTENT LINK
+ * Visible on focus for accessibility
+ */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border-width: 0;
+}
+
+.sr-only:focus-visible {
+  position: absolute;
+  width: auto;
+  height: auto;
+  padding: 1rem;
+  margin: 0;
+  overflow: visible;
+  clip: auto;
+  white-space: normal;
+  top: 0;
+  left: 0;
+  z-index: 50;
+}
+
+/* ============================================================================
+ * FOCUS VISIBLE FOR REACT ROUTER NAVLINK
+ * Custom styling for navigation links
+ */
+a[class*="focus:"] {
+  position: relative;
+}
+
+/* ============================================================================
+ * ANIMATIONS FOR FOCUS STATE
+ * Smooth transition when focus changes
+ */
+@media (prefers-reduced-motion: no-preference) {
+  :focus-visible {
+    transition: outline-offset 150ms ease-out;
+  }
+}
+
+/* ============================================================================
+ * ACCESSIBILITY: High Contrast Mode Support
+ * Ensures focus indicators visible in Windows High Contrast Mode
+ */
+@media (prefers-contrast: more) {
+  :focus-visible {
+    outline-width: 4px;
+  }
+}

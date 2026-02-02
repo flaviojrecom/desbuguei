@@ -8,7 +8,7 @@ const SidebarItem = ({ to, icon, label, filled = false }: { to: string; icon: st
     <NavLink
       to={to}
       className={({ isActive }) =>
-        `flex items-center gap-4 px-4 py-3 rounded-2xl transition-all duration-200 group ${
+        `flex items-center gap-4 px-4 py-3 rounded-2xl transition-all duration-200 group focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary ${
           isActive
             ? 'bg-primary/10 text-primary border border-primary/20 shadow-[0_0_15px_-5px_rgba(var(--color-primary),0.3)]'
             : 'text-slate-400 hover:bg-night-panel hover:text-primary hover:border-primary/20 hover:shadow-sm'
