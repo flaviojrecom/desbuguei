@@ -635,12 +635,20 @@ export const getTermData = async (termId: string): Promise<TermData> => {
       }
     }
   } catch (error) {
+    // Handle API rate limiting (429 - Too Many Requests)
+    const errorMessage = error instanceof Error ? error.message : String(error);
+    if (errorMessage.includes('429') || errorMessage.includes('quota')) {
+      console.warn('[getTermData] API quota exceeded (429). Using local database fallback.');
+    }
+
     console.error("[getTermData] AI Generation failed:", error);
     if (error instanceof Error) {
-      console.error("[getTermData] Erro detalhado:", error.message);
-      console.error("[getTermData] Stack:", error.stack);
+      console.error("[getTermData] Error details:", error.message);
+      if (error.message.includes('API key')) {
+        console.error('[getTermData] API key not configured or invalid');
+      }
     }
-    // Se falhar por falta de API Key, o erro será logado aqui, mas não crashea o app inteiro
+    // Graceful degradation: if API fails, return local data or throw
   }
 
   console.error(`[getTermData] FALHOU: Termo "${termId}" não encontrado em nenhuma fonte`);
