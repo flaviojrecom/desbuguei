@@ -3,6 +3,7 @@ import React, { useEffect, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { GoogleGenAI, LiveServerMessage, Modality, Type, FunctionDeclaration } from '@google/genai';
 import { useVoice } from '../context/VoiceContext';
+import { useFocusTrap } from '../src/hooks/useFocusTrap';
 import { getEnv } from '../utils/env';
 
 // --- Audio Helper Functions (Encoding/Decoding) ---
@@ -94,6 +95,10 @@ export const VoiceAssistant = () => {
   const sessionRef = useRef<any>(null); // To hold the active session
   const nextStartTimeRef = useRef<number>(0);
   const sourcesRef = useRef<Set<AudioBufferSourceNode>>(new Set());
+  const modalRef = useRef<HTMLDivElement>(null); // For focus trap
+
+  // Focus trap for modal accessibility
+  useFocusTrap(isOpen, modalRef, closeVoice);
 
   // Initialize Session
   useEffect(() => {
@@ -371,6 +376,7 @@ export const VoiceAssistant = () => {
 
   return (
     <div
+      ref={modalRef}
       className="fixed inset-0 z-50 flex items-center justify-center p-4"
       role="dialog"
       aria-modal="true"
