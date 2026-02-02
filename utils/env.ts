@@ -5,6 +5,9 @@ export const getEnv = (key: string): string => {
   
   try {
     switch (key) {
+      case 'VITE_GEMINI_API_KEY':
+        // @ts-ignore
+        return import.meta.env.VITE_GEMINI_API_KEY || '';
       case 'API_KEY':
         // @ts-ignore
         return import.meta.env.VITE_API_KEY || '';
