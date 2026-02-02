@@ -45,3 +45,7 @@ coverage/
 tmp/
 temp/
 *.tmp
+
+# Database backups (keep directory, ignore backup files)
+backups/*.sql.gz
+backups/*.log
