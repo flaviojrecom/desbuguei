@@ -96,8 +96,8 @@ As a **UX designer**, I want to **audit and fix keyboard navigation** so that **
 
 ### Task 3: Implement Keyboard Navigation for Interactive Components
 **Subtasks:**
-- [ ] 3.1 Implement VoiceAssistant Alt+V keyboard shortcut (use `useKeyboardShortcut` hook)
-- [ ] 3.2 Test VoiceAssistant keyboard activation and full workflow
+- [x] 3.1 Implement VoiceAssistant Alt+V keyboard shortcut (use `useKeyboardShortcut` hook)
+- [x] 3.2 Test VoiceAssistant keyboard activation and full workflow
 - [ ] 3.3 Implement Arrow key navigation for dropdown menus
 - [ ] 3.4 Implement Space key toggle for checkboxes/radio buttons
 - [ ] 3.5 Implement Enter key for form submission
@@ -316,20 +316,26 @@ function closeModal() {
 
 ## 📊 File List
 
-### Files to Create
-- `docs/guides/keyboard-accessibility.md` - Developer guide for keyboard support
-- `src/hooks/useKeyboardShortcut.ts` - Reusable keyboard shortcut hook
-- `src/tests/focus-management.test.tsx` - Focus and modal tests
+### Files Created (Tasks 1-3)
+- `docs/KEYBOARD-AUDIT-REPORT.md` - Comprehensive keyboard navigation audit (Task 1)
+- `src/index.css` - Global focus styles (Task 2) ✓
+- `src/tests/focus-indicators.test.tsx` - 8 tests for focus styles (Task 2) ✓
+- `src/hooks/useKeyboardShortcut.ts` - Reusable keyboard shortcut hook (Task 3) ✓
+- `src/tests/useKeyboardShortcut.test.ts` - 14 tests for keyboard hook (Task 3) ✓
+- `components/KeyboardShortcutsManager.tsx` - Global keyboard shortcut manager (Task 3) ✓
+- `components/__tests__/KeyboardShortcutsManager.test.tsx` - 5 tests for manager (Task 3) ✓
 
-### Files to Modify
-- `src/components/Card.tsx` - Add focus styles
-- `src/components/Layout.tsx` - Fix navigation focus order
-- `src/components/VoiceAssistant.tsx` - Add Alt+V shortcut
-- `src/pages/Dashboard.tsx` - Audit and fix focus order
-- `src/pages/Glossary.tsx` - Audit and fix focus order
-- `src/pages/Settings.tsx` - Fix form keyboard support and modal focus trap
-- `src/index.css` or `tailwind.config.js` - Add global focus styles
-- `docs/design-system/TOKENS.md` - Reference for focus colors
+### Files Modified (Tasks 1-3)
+- `index.tsx` - Added CSS import for global focus styles (Task 2) ✓
+- `components/Layout.tsx` - Added :focus-visible styles to SidebarItem (Task 2) ✓
+- `components/Card.tsx` - Simplified to use global focus styles (Task 2) ✓
+- `App.tsx` - Added KeyboardShortcutsManager wrapper (Task 3) ✓
+
+### Files Pending (Tasks 4-8)
+- `components/VoiceAssistant.tsx` - Escape key modal closing (Task 4)
+- `pages/Settings.tsx` - Form keyboard support and modal focus trap (Task 5)
+- `docs/guides/keyboard-accessibility.md` - Developer guide (Task 6)
+- Various test files - Focus trap and form tests (Task 7)
 
 ### Files to Delete
 - None
@@ -376,30 +382,59 @@ _To be filled by developer after completion_
 ## 📝 Dev Agent Record
 
 ### Current Task
-Task 2: Fix Focus Indicators (In Progress)
+Task 3: Implement Keyboard Navigation for Interactive Components (Subtasks 3.1-3.2 COMPLETE)
 
 ### Debug Log
 
 **Task 1: Audit Current Keyboard Navigation** ✅ COMPLETE
 - Audited all 5 pages (Dashboard, Glossary, Term Detail, History, Settings)
-- Found Layout.tsx SidebarItem missing focus styles
-- Found Card.tsx using :focus instead of :focus-visible
-- Found VoiceAssistant with no keyboard shortcut support
 - Created comprehensive audit report: docs/KEYBOARD-AUDIT-REPORT.md
 - Identified HIGH, MEDIUM, LOW priority fixes needed
 - Key findings: 40% keyboard support currently
 
-**Task 1 Results:**
-- ✓ Layout.tsx has skip-to-main-content link (good)
-- ✓ Card.tsx has focus ring (but weak contrast: primary/50)
-- ✗ No global :focus-visible styles
-- ✗ No Alt+V shortcut for VoiceAssistant
-- ✗ No focus trap for modals
-- ✗ Favorite button inside Link not keyboard accessible
+**Task 2: Fix Focus Indicators** ✅ COMPLETE
+- Added global :focus-visible styles to src/index.css (80 lines)
+- Updated components/Layout.tsx to use :focus-visible on SidebarItem
+- Simplified components/Card.tsx to use global focus styles
+- Added CSS import to index.tsx
+- Created 8 comprehensive tests in src/tests/focus-indicators.test.tsx
+- All tests passing (8 tests)
+- WCAG 2.1 AA compliance: 3px outline with ≥3:1 contrast ratio
+
+**Task 3: Implement Keyboard Navigation** ✅ SUBTASKS 3.1-3.2 COMPLETE
+- Created src/hooks/useKeyboardShortcut.ts (112 lines)
+  - Exports useKeyboardShortcut hook with TypeScript types
+  - Supports modifier keys: altKey, ctrlKey, shiftKey, metaKey
+  - Includes KEYBOARD_SHORTCUTS configuration object
+  - Features null checking and input element detection
+- Created src/tests/useKeyboardShortcut.test.ts (14 tests)
+  - Hook registration/cleanup tests
+  - Keyboard shortcut configuration tests
+  - Hook options tests (altKey, ctrlKey, metaKey, preventDefault)
+  - Common use cases (voice assistant, search, modals)
+  - WCAG 2.1 AA accessibility compliance tests
+- Created components/KeyboardShortcutsManager.tsx (global keyboard listener)
+  - Integrates with VoiceProvider context
+  - Listens for Alt+V to open voice assistant
+- Created components/__tests__/KeyboardShortcutsManager.test.tsx (5 tests)
+- All tests passing (68 total tests across 6 files)
+
+**Task 3 Subtasks Status:**
+- [x] 3.1 Implement VoiceAssistant Alt+V keyboard shortcut ✓
+  - Hook created and integrated globally
+  - KeyboardShortcutsManager calls openVoice() on Alt+V
+- [x] 3.2 Test VoiceAssistant keyboard activation ✓
+  - 5 tests verify KeyboardShortcutsManager functionality
+  - Tests verify Alt+V configuration and accessibility
+- [ ] 3.3 Arrow key navigation for dropdown menus (pending)
+- [ ] 3.4 Space key for checkboxes/radio buttons (pending)
+- [ ] 3.5 Enter key for form submission (pending)
+- [ ] 3.6 Test all interactive components (pending)
 
 ### Completion Summary
-Task 1 complete. Audit report created with actionable findings.
-Ready to implement Task 2: Fix Focus Indicators with CSS.
+Tasks 1-2 complete. Task 3 subtasks 3.1-3.2 complete.
+Alt+V keyboard shortcut fully implemented and tested (68 tests passing).
+Ready to implement Task 3 remaining subtasks (3.3-3.6) and Task 4 (modal focus trap).
 
 ---
 

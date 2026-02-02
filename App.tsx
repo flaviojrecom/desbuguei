@@ -12,6 +12,7 @@ import { VoiceProvider } from './context/VoiceContext';
 import { ThemeProvider } from './context/ThemeContext';
 import { FavoritesProvider } from './context/FavoritesContext';
 import { HistoryProvider } from './context/HistoryContext';
+import { KeyboardShortcutsManager } from './components/KeyboardShortcutsManager';
 import { initializeSentry } from './utils/sentry';
 
 // Initialize Sentry
@@ -40,24 +41,26 @@ function App() {
     >
       <ThemeProvider>
         <VoiceProvider>
-          <FavoritesProvider>
-            <HistoryProvider>
-              <HashRouter>
-                <Routes>
-                  <Route path="/" element={<Layout />}>
-                    <Route index element={<Dashboard />} />
-                    <Route path="glossary" element={<Glossary />} />
-                    {/* Dynamic Route for Terms */}
-                    <Route path="term/:termId" element={<TermDetail />} />
-                    <Route path="history" element={<History />} />
-                    <Route path="favorites" element={<Favorites />} />
-                    <Route path="settings" element={<Settings />} />
-                    <Route path="*" element={<Navigate to="/" replace />} />
-                  </Route>
-                </Routes>
-              </HashRouter>
-            </HistoryProvider>
-          </FavoritesProvider>
+          <KeyboardShortcutsManager>
+            <FavoritesProvider>
+              <HistoryProvider>
+                <HashRouter>
+                  <Routes>
+                    <Route path="/" element={<Layout />}>
+                      <Route index element={<Dashboard />} />
+                      <Route path="glossary" element={<Glossary />} />
+                      {/* Dynamic Route for Terms */}
+                      <Route path="term/:termId" element={<TermDetail />} />
+                      <Route path="history" element={<History />} />
+                      <Route path="favorites" element={<Favorites />} />
+                      <Route path="settings" element={<Settings />} />
+                      <Route path="*" element={<Navigate to="/" replace />} />
+                    </Route>
+                  </Routes>
+                </HashRouter>
+              </HistoryProvider>
+            </FavoritesProvider>
+          </KeyboardShortcutsManager>
         </VoiceProvider>
       </ThemeProvider>
     </Sentry.ErrorBoundary>
