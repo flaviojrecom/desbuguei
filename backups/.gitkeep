@@ -1,0 +1,41 @@
+# Backups Directory
+
+This directory contains database backup files created by `scripts/db-backup.sh`.
+
+## Important Notes
+
+- ✅ This directory is version-controlled (.gitkeep ensures it exists)
+- ❌ Individual backup files (.sql.gz) are NOT committed (see .gitignore)
+- 📦 Backup files are managed automatically (max 30 files retained)
+- 🔄 New backups can be created on-demand via: `./scripts/db-backup.sh`
+
+## Files Here
+
+```
+backup_20240202_103045.sql.gz    # Timestamped database dumps
+backup_20240201_000000.sql.gz    # Compressed format (~50MB each)
+test-restore_*.log               # Restore test results
+```
+
+## Usage
+
+**Create Manual Backup:**
+```bash
+export SUPABASE_DB_URL="postgresql://..."
+./scripts/db-backup.sh
+```
+
+**Test Restore:**
+```bash
+export SUPABASE_TEST_DB_URL="postgresql://..."
+./scripts/test-backup-restore.sh
+```
+
+## Configuration
+
+- **Retention**: Last 30 backup files
+- **Format**: SQL (gzip compressed)
+- **Size**: ~40-60 MB per backup
+- **Frequency**: On-demand (or weekly via CI/CD)
+
+See `supabase/docs/BACKUPS.md` for full documentation.

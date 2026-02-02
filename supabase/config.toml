@@ -1,0 +1,41 @@
+# Supabase Configuration
+# This file documents backup and disaster recovery settings
+
+[backup]
+# Automated Backup Configuration
+automated_enabled = true
+daily_backup_time = "00:00"  # UTC
+retention_days = 30
+encryption = "AES-256"
+storage_location = "supabase-managed-s3"
+redundancy = "multi-region"
+
+[recovery]
+# Recovery Procedures
+rto_target_minor = 1800         # 30 minutes for minor issues
+rto_target_moderate = 5400      # 90 minutes for corruption
+rto_target_catastrophic = 14400 # 4 hours for complete loss
+rpo_target = 86400              # 24 hours (backup retention)
+
+[monitoring]
+# Backup Monitoring Settings
+backup_alert_threshold_hours = 24
+backup_size_min_bytes = 10485760  # 10 MB
+backup_size_max_bytes = 536870912  # 512 MB
+test_restore_schedule = "0 10 * * 1"  # Monday 10:00 UTC
+
+[documentation]
+# Documentation Files
+recovery_guide = "supabase/docs/RECOVERY.md"
+backup_procedures = "supabase/docs/BACKUPS.md"
+backup_script = "scripts/db-backup.sh"
+backup_test_script = "scripts/test-backup-restore.sh"
+backup_directory = "backups/"
+
+# Development Notes
+# - All backup procedures are documented in RECOVERY.md
+# - Manual backups via pg_dump are stored in backups/ directory
+# - Backup retention is 30 files locally (managed automatically)
+# - Supabase automated backups provide 30-day retention in S3
+# - Monthly restore tests are required (documented in RECOVERY.md)
+# - All scripts are version-controlled for reproducibility
