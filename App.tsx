@@ -8,10 +8,13 @@ import { TermDetail } from './pages/TermDetail';
 import { History } from './pages/History';
 import { Favorites } from './pages/Favorites';
 import { Settings } from './pages/Settings';
+import { LoginPage } from './pages/LoginPage';
 import { VoiceProvider } from './context/VoiceContext';
 import { ThemeProvider } from './context/ThemeContext';
 import { FavoritesProvider } from './context/FavoritesContext';
 import { HistoryProvider } from './context/HistoryContext';
+import { AuthProvider } from './context/AuthContext';
+import { ProtectedRoute } from './components/ProtectedRoute';
 import { KeyboardShortcutsManager } from './components/KeyboardShortcutsManager';
 import { initializeSentry } from './utils/sentry';
 
@@ -39,30 +42,43 @@ function App() {
       }
       showDialog
     >
-      <ThemeProvider>
-        <VoiceProvider>
-          <KeyboardShortcutsManager>
-            <FavoritesProvider>
-              <HistoryProvider>
-                <HashRouter>
-                  <Routes>
-                    <Route path="/" element={<Layout />}>
-                      <Route index element={<Dashboard />} />
-                      <Route path="glossary" element={<Glossary />} />
-                      {/* Dynamic Route for Terms */}
-                      <Route path="term/:termId" element={<TermDetail />} />
-                      <Route path="history" element={<History />} />
-                      <Route path="favorites" element={<Favorites />} />
-                      <Route path="settings" element={<Settings />} />
-                      <Route path="*" element={<Navigate to="/" replace />} />
-                    </Route>
-                  </Routes>
-                </HashRouter>
-              </HistoryProvider>
-            </FavoritesProvider>
-          </KeyboardShortcutsManager>
-        </VoiceProvider>
-      </ThemeProvider>
+      <AuthProvider>
+        <ThemeProvider>
+          <VoiceProvider>
+            <KeyboardShortcutsManager>
+              <FavoritesProvider>
+                <HistoryProvider>
+                  <HashRouter>
+                    <Routes>
+                      {/* Login route - unprotected */}
+                      <Route path="/login" element={<LoginPage />} />
+
+                      {/* Protected routes */}
+                      <Route path="/" element={<Layout />}>
+                        <Route index element={<Dashboard />} />
+                        <Route path="glossary" element={<Glossary />} />
+                        {/* Dynamic Route for Terms */}
+                        <Route path="term/:termId" element={<TermDetail />} />
+                        <Route path="history" element={<History />} />
+                        <Route path="favorites" element={<Favorites />} />
+                        <Route
+                          path="settings"
+                          element={
+                            <ProtectedRoute>
+                              <Settings />
+                            </ProtectedRoute>
+                          }
+                        />
+                        <Route path="*" element={<Navigate to="/" replace />} />
+                      </Route>
+                    </Routes>
+                  </HashRouter>
+                </HistoryProvider>
+              </FavoritesProvider>
+            </KeyboardShortcutsManager>
+          </VoiceProvider>
+        </ThemeProvider>
+      </AuthProvider>
     </Sentry.ErrorBoundary>
   );
 }

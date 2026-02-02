@@ -1,7 +1,9 @@
 
 import React, { useState, useRef, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { useTheme } from '../context/ThemeContext';
 import { useVoice } from '../context/VoiceContext';
+import { useAuth } from '../hooks/useAuth';
 import { characters, Character } from '../data/characters';
 import { GoogleGenAI, Modality } from "@google/genai";
 import { seedDatabase } from '../services/termService';
@@ -39,8 +41,10 @@ async function decodeAudioData(
 }
 
 export const Settings = () => {
+  const navigate = useNavigate();
   const { themeMode, setThemeMode } = useTheme();
   const { activeCharacter, setActiveCharacter } = useVoice();
+  const { logout, adminName } = useAuth();
 
   // Audio Preview State
   const [playingId, setPlayingId] = useState<string | null>(null);
@@ -233,10 +237,11 @@ export const Settings = () => {
         <div>
             <h2 className="text-3xl md:text-4xl font-bold font-display text-slate-100">Configurações</h2>
             <p className="text-slate-400 mt-2">Personalize sua experiência e gerencie o sistema.</p>
+            <p className="text-slate-500 text-sm mt-3">👤 Conectado como: <span className="font-semibold text-slate-300">{adminName}</span></p>
         </div>
 
-        {/* Theme Toggle Buttons */}
-        <div className="flex gap-3">
+        {/* Theme Toggle & Logout Buttons */}
+        <div className="flex gap-3 flex-wrap">
             <button
                 onClick={() => setThemeMode('light')}
                 className={`size-12 rounded-full border-2 flex items-center justify-center transition-all duration-300 focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-offset-night-bg focus-visible:ring-primary ${
@@ -259,6 +264,19 @@ export const Settings = () => {
                 title="Modo Escuro"
             >
                 <span className={`material-symbols-outlined text-xl ${themeMode === 'dark' ? 'icon-filled' : ''}`}>dark_mode</span>
+            </button>
+
+            {/* Logout Button */}
+            <button
+                onClick={() => {
+                  logout();
+                  navigate('/login');
+                }}
+                className="px-4 py-2 rounded-lg border-2 border-red-500/50 bg-red-500/10 text-red-400 hover:bg-red-500/20 hover:border-red-500 transition-all duration-300 flex items-center gap-2 font-semibold text-sm focus:outline-none focus-visible:ring-2 focus-visible:ring-red-500 focus-visible:ring-offset-2 focus-visible:ring-offset-night-bg"
+                title="Sair da conta"
+            >
+                <span className="material-symbols-outlined text-lg">logout</span>
+                <span>Sair</span>
             </button>
         </div>
       </header>
