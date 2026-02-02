@@ -345,15 +345,25 @@ export const Settings = () => {
                         </p>
                     </div>
                     
-                    <form onSubmit={handleUnlockAdmin} className="flex flex-col gap-3 w-full max-w-xs relative">
+                    <form onSubmit={handleUnlockAdmin} className="flex flex-col gap-4 w-full max-w-xs">
+                        <label htmlFor="admin-password" className="text-sm font-semibold text-slate-300">
+                            Código de Acesso <span className="text-rose-500" aria-label="obrigatório">*</span>
+                        </label>
                         <input
+                            id="admin-password"
                             type="password"
                             value={adminPasswordInput}
                             onChange={(e) => setAdminPasswordInput(e.target.value)}
-                            placeholder="Código de Acesso"
+                            placeholder="Digite seu código"
+                            aria-required="true"
+                            aria-describedby={adminError ? 'admin-error' : undefined}
                             className={`w-full bg-night-bg border ${adminError ? 'border-rose-500 text-rose-500 placeholder-rose-700/50' : 'border-night-border text-slate-200'} rounded-xl px-4 py-3 text-center focus:outline-none focus-visible:ring-2 focus-visible:ring-primary/50 transition-all font-mono tracking-widest`}
                         />
-                         {adminError && <span className="text-rose-500 text-xs font-bold absolute -bottom-6 left-0 right-0">Código incorreto. Acesso negado.</span>}
+                         {adminError && (
+                            <span id="admin-error" className="text-rose-500 text-xs font-bold" role="alert">
+                                Código incorreto. Acesso negado.
+                            </span>
+                        )}
                         <button
                             type="submit"
                             className="mt-2 w-full bg-night-panel border border-night-border hover:bg-emerald-500/10 hover:text-emerald-400 hover:border-emerald-500/50 text-slate-400 font-bold py-2 rounded-xl transition-all focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-offset-night-bg focus-visible:ring-emerald-500/50"
@@ -387,20 +397,29 @@ export const Settings = () => {
                             )}
 
                             <div className="flex flex-col gap-3">
-                                <textarea 
+                                <label htmlFor="seed-list" className="text-sm font-semibold text-slate-300">
+                                    Lista de Termos para Alimentar IA
+                                </label>
+                                <textarea
+                                    id="seed-list"
                                     value={customListText}
                                     onChange={(e) => setCustomListText(e.target.value)}
                                     placeholder="Cole aqui: Kubernetes, Docker, API, React..."
-                                    className="w-full h-32 bg-night-bg border border-night-border rounded-xl p-4 text-sm text-slate-300 focus:border-emerald-500/50 focus:ring-1 focus:ring-emerald-500/50 outline-none resize-none font-mono"
+                                    aria-describedby="seed-help"
+                                    className="w-full h-32 bg-night-bg border border-night-border rounded-xl p-4 text-sm text-slate-300 focus:outline-none focus-visible:ring-2 focus-visible:ring-emerald-500/50 transition-all resize-none font-mono"
                                 ></textarea>
+                                <p id="seed-help" className="text-xs text-slate-500">
+                                    Separadas por vírgula ou quebra de linha. Máximo 50 termos por vez.
+                                </p>
 
                                 <div className="flex flex-wrap gap-3">
-                                    <button 
+                                    <button
                                         onClick={() => handleSeedDatabase(true)}
                                         disabled={seeding || !hasSupabase || !customListText.trim()}
-                                        className={`flex-1 px-6 py-3 rounded-xl font-bold flex items-center justify-center gap-3 transition-all ${
+                                        aria-label="Alimentar banco de dados com lista customizada"
+                                        className={`flex-1 px-6 py-3 rounded-xl font-bold flex items-center justify-center gap-3 transition-all focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-offset-night-bg focus-visible:ring-emerald-500 ${
                                             seeding || !customListText.trim()
-                                            ? 'bg-night-border text-slate-500 cursor-not-allowed' 
+                                            ? 'bg-night-border text-slate-500 cursor-not-allowed'
                                             : 'bg-emerald-500 text-night-bg hover:bg-emerald-400 shadow-lg shadow-emerald-500/20'
                                         }`}
                                     >

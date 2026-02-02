@@ -91,7 +91,7 @@ describe('Settings Page Keyboard Navigation (Task 3)', () => {
     it('should render password input and unlock button', () => {
       renderSettings();
 
-      const passwordInput = screen.getByPlaceholderText('Código de Acesso');
+      const passwordInput = screen.getByLabelText(/Código de Acesso/i);
       const unlockButton = screen.getByText('Desbloquear Painel');
 
       expect(passwordInput).toBeInTheDocument();
@@ -100,7 +100,7 @@ describe('Settings Page Keyboard Navigation (Task 3)', () => {
 
     it('should have focus styles on password input', () => {
       renderSettings();
-      const passwordInput = screen.getByPlaceholderText('Código de Acesso');
+      const passwordInput = screen.getByLabelText(/Código de Acesso/i);
 
       expect(passwordInput.className).toContain('focus');
     });
@@ -144,7 +144,7 @@ describe('Settings Page Keyboard Navigation (Task 3)', () => {
     it('should have accessible form with proper labels and focus', () => {
       renderSettings();
 
-      const passwordInput = screen.getByPlaceholderText('Código de Acesso');
+      const passwordInput = screen.getByLabelText(/Código de Acesso/i);
       const form = passwordInput.closest('form');
 
       // Form should exist
@@ -195,7 +195,7 @@ describe('Settings Page Keyboard Navigation (Task 3)', () => {
     it('should support keyboard interaction with password form', () => {
       renderSettings();
 
-      const passwordInput = screen.getByPlaceholderText('Código de Acesso');
+      const passwordInput = screen.getByLabelText(/Código de Acesso/i);
       const form = passwordInput.closest('form');
 
       // Form exists and is ready for keyboard interaction
