@@ -17,6 +17,9 @@ export const getEnv = (key: string): string => {
       case 'SUPABASE_ANON_KEY':
         // @ts-ignore
         return import.meta.env.VITE_SUPABASE_ANON_KEY || '';
+      case 'SENTRY_DSN':
+        // @ts-ignore
+        return import.meta.env.VITE_SENTRY_DSN || '';
       default:
         return '';
     }

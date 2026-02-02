@@ -12,11 +12,24 @@ export default defineConfig(({ mode }) => {
       plugins: [react()],
       define: {
         'process.env.API_KEY': JSON.stringify(env.GEMINI_API_KEY),
-        'process.env.GEMINI_API_KEY': JSON.stringify(env.GEMINI_API_KEY)
+        'process.env.GEMINI_API_KEY': JSON.stringify(env.GEMINI_API_KEY),
+        'process.env.SENTRY_DSN': JSON.stringify(env.VITE_SENTRY_DSN)
       },
       resolve: {
         alias: {
           '@': path.resolve(__dirname, '.'),
+        }
+      },
+      build: {
+        // Generate source maps for production error tracking
+        sourcemap: true,
+        // Minimize source maps size
+        rollupOptions: {
+          output: {
+            sourcemapIgnoreList: (relativeSourcePath) => {
+              return relativeSourcePath.includes('node_modules');
+            }
+          }
         }
       }
     };
