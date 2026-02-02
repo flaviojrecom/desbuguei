@@ -44,7 +44,7 @@ export const Dashboard = () => {
             type="text"
           />
           <div className="absolute right-2 top-1/2 -translate-y-1/2 flex items-center gap-2">
-            <button type="submit" className="bg-primary hover:bg-primary-dark text-night-bg font-bold px-6 py-2.5 rounded-full text-base transition-all shadow-lg hover:shadow-primary/25 active:scale-95 flex items-center h-[46px]">
+            <button type="submit" className="bg-primary hover:bg-primary-dark text-night-bg font-bold px-6 py-2.5 rounded-full text-base transition-all shadow-lg hover:shadow-primary/25 active:scale-95 flex items-center h-[46px] focus:outline-none focus:ring-2 focus:ring-primary/30 focus:ring-offset-2 focus:ring-offset-night-bg">
               DESBUGAR
             </button>
             <button
@@ -68,7 +68,7 @@ export const Dashboard = () => {
               onClick={() => navigate(`/term/${tag}`)}
               aria-label={`Buscar por ${tag}`}
               title={`Buscar por ${tag}`}
-              className="px-4 py-1.5 rounded-full border border-night-border bg-night-panel/50 hover:border-primary/50 hover:text-primary text-slate-400 text-sm font-semibold transition-all flex items-center gap-1"
+              className="px-4 py-2 rounded-full border border-night-border bg-night-panel/50 hover:border-primary/50 hover:text-primary text-slate-400 text-sm font-semibold transition-all flex items-center gap-1 focus:outline-none focus:ring-2 focus:ring-primary/50 focus:ring-offset-2 min-h-[44px]"
             >
               <span className="material-symbols-outlined text-xs" aria-hidden="true">trending_up</span> #{tag}
             </button>
@@ -89,7 +89,7 @@ export const Dashboard = () => {
           
           <div className="flex items-center gap-3">
             <label htmlFor="sort-select" className="text-sm font-semibold text-slate-400">Ordenar por:</label>
-            <select id="sort-select" className="bg-night-panel border border-night-border rounded-xl px-4 py-2 text-xs font-bold text-slate-400 focus:outline-none focus:border-primary">
+            <select id="sort-select" className="bg-night-panel border border-night-border rounded-xl px-4 py-2 text-xs font-bold text-slate-400 focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary min-h-[44px]">
               <option>Recentes</option>
               <option>Populares</option>
               <option>A-Z</option>

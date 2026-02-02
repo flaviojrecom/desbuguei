@@ -361,10 +361,22 @@ export const VoiceAssistant = () => {
     }
   };
 
+  const handleBackdropKeyDown = (e: React.KeyboardEvent<HTMLDivElement>) => {
+    if (e.key === 'Escape') {
+      closeVoice();
+    }
+  };
+
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
+    <div
+      className="fixed inset-0 z-50 flex items-center justify-center p-4"
+      role="dialog"
+      aria-modal="true"
+      aria-label="Assistente de voz Desbuquei"
+      onKeyDown={handleBackdropKeyDown}
+    >
       {/* Blurred Backdrop */}
       <div 
         className="absolute inset-0 bg-black/80 backdrop-blur-sm transition-opacity" 
@@ -388,11 +400,13 @@ export const VoiceAssistant = () => {
                  <span className="text-xs text-slate-500 uppercase tracking-widest font-bold">{activeCharacter.archetype}</span>
             </div>
           </div>
-          <button 
+          <button
             onClick={closeVoice}
-            className="text-slate-500 hover:text-slate-200 hover:bg-white/10 rounded-full p-2 transition-all"
+            aria-label="Fechar assistente de voz"
+            title="Fechar assistente de voz"
+            className="text-slate-500 hover:text-slate-200 hover:bg-white/10 rounded-full p-2 transition-all focus:outline-none focus:ring-2 focus:ring-primary/50 focus:ring-offset-2 min-w-[44px] min-h-[44px] flex items-center justify-center"
           >
-            <span className="material-symbols-outlined">close</span>
+            <span className="material-symbols-outlined" aria-hidden="true">close</span>
           </button>
         </div>
 
@@ -460,12 +474,14 @@ export const VoiceAssistant = () => {
 
         {/* Footer Actions */}
         <div className="p-8 pt-4 bg-transparent flex flex-col gap-4 relative z-10">
-          <button 
-             onClick={handleManualStop}
-             className={`w-full h-14 text-night-bg rounded-2xl flex items-center justify-center gap-3 font-bold text-lg shadow-lg transition-all hover:-translate-y-0.5 active:translate-y-0 ${activeCharacter.color.replace('text-', 'bg-').replace('/10', '')}`}
+          <button
+            onClick={handleManualStop}
+            aria-label={currentInput || transcription.length > 0 ? 'Pesquisar termo agora' : 'Parar de ouvir'}
+            title={currentInput || transcription.length > 0 ? 'Pesquisar termo agora' : 'Parar de ouvir'}
+            className={`w-full h-14 text-night-bg rounded-2xl flex items-center justify-center gap-3 font-bold text-lg shadow-lg transition-all hover:-translate-y-0.5 active:translate-y-0 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-white/30 ${activeCharacter.color.replace('text-', 'bg-').replace('/10', '')}`}
           >
             <div className="p-1.5 bg-white/20 rounded-full">
-              <span className="material-symbols-outlined icon-filled text-sm">stop_circle</span>
+              <span className="material-symbols-outlined icon-filled text-sm" aria-hidden="true">stop_circle</span>
             </div>
             <span>{currentInput || transcription.length > 0 ? 'Pesquisar Agora' : 'Parar de ouvir'}</span>
           </button>
